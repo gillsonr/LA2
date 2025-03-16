@@ -6,7 +6,8 @@ public class Song {
 	private String artist;
 	private Rating rating;
 	private String album;
-	// private Album album; (add when we make album class)
+	private int timesPlayed = 0;
+	
 	
 	// Constructor
 	public Song (String title, String artist, String album) {

@@ -6,12 +6,10 @@ public class Playlist {
 
 	private String playlistName;
 	private ArrayList<Song> songs;
-	private ArrayList<String> albums;
 
 	public Playlist(String name) {
 	    this.playlistName = name;
 	    this.songs = new ArrayList<Song>();
-	    this.albums = new ArrayList<String>();
 	}
 	
 	public String getName() {
