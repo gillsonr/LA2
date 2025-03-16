@@ -5,7 +5,11 @@ import java.util.ArrayList;
 public class User {
 	private String userName;
 	private String password;
+	private LibraryModel library;
+	// I think this needs to be the library, users don't have just an open list of songs
+	// it should be an entire library just like we were doing before we had users
 	private ArrayList<Song> songs;
+	
 	
 	// Constructor
 	public User(String name, String pw) {
@@ -33,6 +37,41 @@ public class User {
 	// get the password
 	public String getPassword() {
 		return password;
+	}
+
+	public void displayLibrary(int sortChoice) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void playSong(User currentUser, String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void displayRecentlyPlayed(User currentUser) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void displayFrequentlyPlayed(User currentUser) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void shuffleSongs(User currentUser) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void displayPlaylists(User currentUser) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeFromLibrary(User currentUser, String title) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

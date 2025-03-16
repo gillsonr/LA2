@@ -8,13 +8,12 @@ import model.UserDatabase;
 
 public class MusicApp {
     private Scanner scanner;
-    private LibraryModel library;
-    private UserDatabase dataBase;
     private User currentUser;
+    private UserDatabase dataBase;
 
     public MusicApp() {
         scanner = new Scanner(System.in);
-        library = new LibraryModel();
+        dataBase = new UserDatabase();
     }
 
     public void run() {
@@ -44,18 +43,21 @@ public class MusicApp {
     }
 
     private void login() {
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        
-        currentUser = dataBase.login(username, password);
-        if (currentUser != null) {
-            System.out.println("Login successful!");
-            mainMenu();
-        } else {
-            System.out.println("Invalid credentials.");
+        while(true) {
+        	System.out.print("Enter username: ");
+            String username = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+            
+            currentUser = dataBase.login(username, password);
+            if (currentUser != null) {
+                System.out.println("Login successful!\n");
+                break;
+            } else {
+                System.out.println("Invalid credentials, please try again.");
+            }
         }
+        mainMenu();
     }
 
     private void createAccount() {
@@ -66,12 +68,14 @@ public class MusicApp {
             String password = scanner.nextLine();
         	if (dataBase.addUser(username, password)) {
                 System.out.println("Account created successfully.");
+                currentUser = dataBase.login(username, password);
                 break;
             } 
         	else {
                 System.out.println("Username already exists, please try again.");
             }
         }
+        mainMenu();
     }
 
     private void mainMenu() {
@@ -81,6 +85,7 @@ public class MusicApp {
             System.out.println("2. Play Song");
             System.out.println("3. View Recently Played Songs");
             System.out.println("4. View Frequently Played Songs");
+            //TODO Edit searchability
             System.out.println("5. Search for a Song");
             System.out.println("6. Shuffle Library");
             System.out.println("7. View Playlists");
@@ -128,26 +133,27 @@ public class MusicApp {
         System.out.println("Sort library by: 1. Title 2. Artist 3. Rating");
         int sortChoice = scanner.nextInt();
         scanner.nextLine();
-        //library.displayLibrary(currentUser, sortChoice);
+        currentUser.displayLibrary(sortChoice);
     }
 
     private void playSong() {
         System.out.print("Enter song title to play: ");
         String title = scanner.nextLine();
-        //library.playSong(currentUser, title);
+        currentUser.playSong(currentUser, title);
     }
 
     private void viewRecentlyPlayed() {
-        //library.displayRecentlyPlayed(currentUser);
+    	currentUser.displayRecentlyPlayed(currentUser);
     }
 
     private void viewFrequentlyPlayed() {
-        //library.displayFrequentlyPlayed(currentUser);
+    	currentUser.displayFrequentlyPlayed(currentUser);
     }
 
     private void searchSong() {
-        System.out.print("Enter song title to search: ");
-        String title = scanner.nextLine();
+    	//TODO fix the searches
+        System.out.print("Search for song(s) by: 1. Title 2. Artist 3. Genre");
+        String searchType = scanner.nextLine();
         //library.searchSong(title);
         System.out.print("Would you like to view album details? (yes/no): ");
         if (scanner.nextLine().equalsIgnoreCase("yes")) {
@@ -156,17 +162,17 @@ public class MusicApp {
     }
 
     private void shuffleLibrary() {
-        //library.shuffleSongs(currentUser);
+    	currentUser.shuffleSongs(currentUser);
     }
 
     private void viewPlaylists() {
-        //library.displayPlaylists(currentUser);
+    	currentUser.displayPlaylists(currentUser);
     }
 
     private void removeSongOrAlbum() {
         System.out.print("Enter title of song or album to remove: ");
         String title = scanner.nextLine();
-        //library.removeFromLibrary(currentUser, title);
+        currentUser.removeFromLibrary(currentUser, title);
     }
 
     public static void main(String[] args) {

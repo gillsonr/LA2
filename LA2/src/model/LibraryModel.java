@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // the LibraryModel class stores user information about what they have saved from the music store
 public class LibraryModel {
@@ -8,12 +9,15 @@ public class LibraryModel {
 	private ArrayList<Album> albums;
 	private ArrayList<Playlist> playlists;
 	private ArrayList<Song> favoriteSongs;
+	// timesPlayed, Song
+	private HashMap<Integer, Song> freqPlayed;
 
 	public LibraryModel(){
 		songs = new ArrayList<>();
 		albums = new ArrayList<>();
 		playlists = new ArrayList<>(); 
 		favoriteSongs = new ArrayList<>();
+		freqPlayed = new HashMap<Integer, Song>();
 	}
 	// finds song from songName and artistName in music store and creates copy
 	// if song doesn't exist, song = null
