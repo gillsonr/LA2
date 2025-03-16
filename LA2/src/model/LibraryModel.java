@@ -304,6 +304,6 @@ public class LibraryModel {
 		// if the song was not found dont rate it
 		return "Song was not found";
 	}
-	
+
 
 }
