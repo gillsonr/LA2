@@ -5,7 +5,15 @@ import java.util.HashMap;
 
 // the LibraryModel class stores user information about what they have saved from the music store
 public class LibraryModel {
-	private ArrayList<Song> songs;
+	
+	/* TODO maybe we change these to hashmaps, ex <title, arrayList of songs>
+	 * <album title, ArrayList<album>
+	 * <playlist title, playlist> (we dont allow duplicate playlistNames)
+	 * 
+	 */
+	
+	// <title, SongList>
+	private HashMap<String,ArrayList<Song>> songs;
 	private ArrayList<Album> albums;
 	private ArrayList<Playlist> playlists;
 	private ArrayList<Song> favoriteSongs;
@@ -13,7 +21,7 @@ public class LibraryModel {
 	private HashMap<Integer, Song> freqPlayed;
 
 	public LibraryModel(){
-		songs = new ArrayList<>();
+		songs = new HashMap<String,ArrayList<Song>>();
 		albums = new ArrayList<>();
 		playlists = new ArrayList<>(); 
 		favoriteSongs = new ArrayList<>();
@@ -30,12 +38,23 @@ public class LibraryModel {
 
 	// searches through songs to see if a song is already in library
 	public boolean duplicate(Song s) {
-		for (Song currSong: songs) {
-			if (currSong.equals(s)) {
-				return true;
+		if (songs.containsKey(s.getTitle())) {
+			for (Song currSong: songs.get(s.getTitle())){
+				if (currSong.equals(s)) {
+					return true;
+				}
 			}
 		}
 		return false;
+	}
+	// adds song to HashMap, if no other songs share title, 
+	// will add <title, ArrayList<Song>> to HashMap
+	public void addSong(Song s) {
+		// if HashMap does not contain song title
+		if (!songs.containsKey(s.getTitle())) {
+			songs.put(s.getTitle(), new ArrayList<Song>());
+		}
+		songs.get(s.getTitle()).add(s);
 	}
 	
 	public String addAlbumToLibrary(String albumName, String artist) {
@@ -48,7 +67,7 @@ public class LibraryModel {
 		Album a = MusicStore.getAlbumByTitleAndArtist(albumName, artist);
 		albums.add(a);
 		for(Song s: a.getSongs()) {
-			songs.add(s);
+			addSong(s);
 		}
 		return albumName + " successfully added\n";
 	}
@@ -61,10 +80,12 @@ public class LibraryModel {
 		if (duplicate(s)) {
 			return "Song could not be added; already in Library";
 		}
-		songs.add(s);
+		addSong(s);
 		return songName + " was added to Library";
 	}
 
+	// TODO fix this (I don't wnat to use a ton of for loops to search through hashmap
+	/*
 	// this method gets all of the songs in the library by artist
 	public String getSongsByArtist(String artist) {
 		String result = "";
@@ -82,18 +103,18 @@ public class LibraryModel {
 			return "Songs by " + artist + "\n" + result;
 		}
 	}
+	*/
 	
 	// this method gets all of the songs in the library by title
 	public String getSongsByTitle(String title) {
 		String result = "";
-		
-		// loop through all the songs in the library
-		for (Song song: songs) {
-			if (song.getTitle().equals(title)) {
+		// TODO do I need the first if statement (what happens if I just
+		// have the for loop and there are no songs with same title
+		if(songs.containsKey(title)) {
+			for(Song song: songs.get(title)) {
 				result += song.toString();
 			}
 		}
-		
 		if (result.equals("")) {
 			return "No songs with title " + title; 
 		} else {
@@ -152,9 +173,9 @@ public class LibraryModel {
 					return "Song already in playlist";
 				}
 				
-				//check if song is in the music library				
-				for (Song s: songs) {
-					if (s.getTitle().equals(songTitle) && s.getArtist().equals(artist)) {
+				//check if song is in the music library	
+				for (Song s: songs.get(songTitle)) {
+					if (s.getArtist().equals(artist)) {
 						songFound = true;
 					}
 				}
@@ -230,8 +251,10 @@ public class LibraryModel {
 	public String allSongs() {
 		String str = "";
 		//search through all of the songs in library
-		for (Song s: songs) {
-			str += s.toString();
+		for (String songTitle: songs.keySet()) {
+			for(Song s: songs.get(songTitle)) {
+				str += s.toString();
+			}
 		}
 		if (str.equals("")) {
 			return "No songs in library\n";
@@ -239,9 +262,12 @@ public class LibraryModel {
 		return "Here is a list of all songs in your library\n" + str;
 	}
 	
+	//TODO change to HashMap with artist as key
+	/*
 	public String allArtists() {
 		String str = "";
 		//search through all of the songs in library
+		
 		for (Song s: songs) {
 			// check if the artist has already been added to the string
 			if (str.contains(s.getArtist()) == false) {
@@ -254,6 +280,7 @@ public class LibraryModel {
 		}
 		return "Here is a list of all artists in your library\n" + str;
 	}
+	*/
 	
 	public String allAlbums() {
 		String str = "";
@@ -291,17 +318,17 @@ public class LibraryModel {
 		return "Here is a list of all favorites in your library\n" + str;
 	}
 	
-	public String rateSong(String song, String artist, int rating) {
+	public String rateSong(String title, String artist, int rating) {
 		// find the song
-		for (Song s: songs) {
-			if (s.getTitle().equals(song) && s.getArtist().equals(artist)) {
+		for (Song s: songs.get(title)) {
+			if (s.getArtist().equals(artist)) {
 				//rate the song and tell the user it has been rated
 				s.setRating(rating);
 				//add the song to the list of favorite songs
 				if (rating == 5) {
 					favoriteSongs.add(s);
 				}
-				return song + "has been rated\n";
+				return title + "has been rated\n";
 			}
 		}
 		

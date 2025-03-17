@@ -44,34 +44,56 @@ public class User {
 		
 	}
 
-	public void playSong(User currentUser, String title) {
+	public void playSong(String title) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void displayRecentlyPlayed(User currentUser) {
+	public void displayRecentlyPlayed() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void displayFrequentlyPlayed(User currentUser) {
+	public void displayFrequentlyPlayed() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void shuffleSongs(User currentUser) {
+	public void shuffleSongs() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void displayPlaylists(User currentUser) {
+	public void displayPlaylists() {
+		library.allPlaylists();
+		
+	}
+
+	public void removeAlbumFromLibrary(String title) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void removeFromLibrary(User currentUser, String title) {
+	public void removeSongFromLibrary(String title) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void searchAlbum(String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void searchArtist(String artist) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void searchGenre(String genre) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 }

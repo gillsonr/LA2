@@ -1,8 +1,9 @@
 package view;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
-import model.LibraryModel;
+import model.MusicStore;
 import model.User;
 import model.UserDatabase;
 
@@ -14,6 +15,7 @@ public class MusicApp {
     public MusicApp() {
         scanner = new Scanner(System.in);
         dataBase = new UserDatabase();
+        MusicStore.processFile();
     }
 
     public void run() {
@@ -23,17 +25,17 @@ public class MusicApp {
             System.out.println("2. Create Account");
             System.out.println("3. Exit");
             System.out.print("Enter choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            String choice = scanner.nextLine();
+            System.out.println();
             
             switch (choice) {
-                case 1:
+                case "1":
                     login();
                     break;
-                case 2:
+                case "2":
                     createAccount();
                     break;
-                case 3:
+                case "3":
                     System.out.println("Goodbye!🎵");
                     return;
                 default:
@@ -85,42 +87,48 @@ public class MusicApp {
             System.out.println("2. Play Song");
             System.out.println("3. View Recently Played Songs");
             System.out.println("4. View Frequently Played Songs");
-            //TODO Edit searchability
-            System.out.println("5. Search for a Song");
-            System.out.println("6. Shuffle Library");
-            System.out.println("7. View Playlists");
-            System.out.println("8. Remove Song or Album");
-            System.out.println("9. Logout");
+            System.out.println("5. Search Library");
+            System.out.println("6. Search MusicStore");
+            System.out.println("7. Shuffle Library");
+            System.out.println("8. View Playlists");
+            System.out.println("9. Remove Song");
+            System.out.println("10. Remove Album");
+            System.out.println("11. Logout");
             System.out.print("Enter choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            String choice = scanner.nextLine();
             
             switch (choice) {
-                case 1:
+                case "1":
                     viewLibrary();
                     break;
-                case 2:
+                case "2":
                     playSong();
                     break;
-                case 3:
+                case "3":
                     viewRecentlyPlayed();
                     break;
-                case 4:
+                case "4":
                     viewFrequentlyPlayed();
                     break;
-                case 5:
-                    searchSong();
+                case "5":
+                    searchLibrary();
                     break;
-                case 6:
+                case "6":
+                    searchMusicStore();
+                    break;
+                case "7":
                     shuffleLibrary();
                     break;
-                case 7:
+                case "8":
                     viewPlaylists();
                     break;
-                case 8:
-                    removeSongOrAlbum();
+                case "9":
+                    removeSong();
                     break;
-                case 9:
+                case "10":
+                    removeAlbum();
+                    return;
+                case "11":
                     System.out.println("Logging out...");
                     return;
                 default:
@@ -129,7 +137,97 @@ public class MusicApp {
         }
     }
 
-    private void viewLibrary() {
+
+    private void searchMusicStore() {
+    	System.out.println("Search for song(s) in MusicStore by: "
+    			+ "1. Title 2. Album 3. Artist 4. Genre");
+    	System.out.print("Enter choice: ");
+    	String searchType = scanner.nextLine();
+    	System.out.println();
+        switch(searchType) {
+	        case "1":
+	        	System.out.print("Enter Song Title to search: ");
+	            String title = scanner.nextLine();
+	            System.out.print(MusicStore.getSongsByTitle(title));
+	            System.out.print("Would you like to view album details? (yes/no): ");
+	            if (scanner.nextLine().equalsIgnoreCase("yes")) {
+	                //MusicStore.displayAlbumInfo(title);
+	            }
+	        	break;
+	        case "2":
+	        	System.out.print("Enter Album to search: ");
+	            String album = scanner.nextLine();
+	            System.out.print(MusicStore.getAlbumsByTitle(album));
+	        	break;
+	        case "3":
+	        	System.out.print("Enter Artist to search: ");
+	            String artist = scanner.nextLine();
+	            System.out.print(MusicStore.getSongsByArtist(artist));
+	        	break;
+	        case "4":
+	        	System.out.print("Enter Genre to search: ");
+	            String genre = scanner.nextLine();
+	            System.out.print(MusicStore.getSongsByGenre(genre));
+	        	break;
+	        default:
+	        	System.out.println("Invalid choice. Try again.");
+	        	searchMusicStore();
+        }
+	}
+    
+	private void searchLibrary() {
+    	System.out.println("Search for song(s) in library by: "
+    			+ "1. Title 2. Album 3. Artist 4. Genre");
+    	System.out.print("Enter choice: ");
+    	String searchType = scanner.nextLine();
+    	System.out.println();
+        switch(searchType) {
+	        case "1":
+	        	searchSong();
+	        	break;
+	        case "2":
+	        	System.out.print("Enter title of Album to search: ");
+	            String album = scanner.nextLine();
+	            currentUser.searchAlbum(album);
+	        	break;
+	        case "3":
+	        	System.out.print("Enter Artist to search: ");
+	            String artist = scanner.nextLine();
+	            currentUser.searchArtist(artist);
+	        	break;
+	        case "4":
+	        	System.out.print("Enter Genre to search: ");
+	            String genre = scanner.nextLine();
+	            currentUser.searchGenre(genre);
+	        	break;
+	        default:
+	        	System.out.println("Invalid choice. Try again.");
+	        	searchLibrary();
+	        	break;
+        }
+    }
+
+	private void searchSong() {
+		// TODO Auto-generated method stub
+		System.out.print("Would you like to view album details? (yes/no): ");
+        if (scanner.nextLine().equalsIgnoreCase("yes")) {
+            //library.displayAlbumInfo(title);
+        }
+	}
+
+	private void removeSong() {
+    	System.out.print("Enter title of song to remove: ");
+        String title = scanner.nextLine();
+        currentUser.removeSongFromLibrary(title);
+	}
+
+	private void removeAlbum() {
+		System.out.print("Enter title of album to remove: ");
+        String title = scanner.nextLine();
+        currentUser.removeAlbumFromLibrary(title);
+	}
+
+	private void viewLibrary() {
         System.out.println("Sort library by: 1. Title 2. Artist 3. Rating");
         int sortChoice = scanner.nextInt();
         scanner.nextLine();
@@ -139,40 +237,23 @@ public class MusicApp {
     private void playSong() {
         System.out.print("Enter song title to play: ");
         String title = scanner.nextLine();
-        currentUser.playSong(currentUser, title);
+        currentUser.playSong(title);
     }
 
     private void viewRecentlyPlayed() {
-    	currentUser.displayRecentlyPlayed(currentUser);
+    	currentUser.displayRecentlyPlayed();
     }
 
     private void viewFrequentlyPlayed() {
-    	currentUser.displayFrequentlyPlayed(currentUser);
-    }
-
-    private void searchSong() {
-    	//TODO fix the searches
-        System.out.print("Search for song(s) by: 1. Title 2. Artist 3. Genre");
-        String searchType = scanner.nextLine();
-        //library.searchSong(title);
-        System.out.print("Would you like to view album details? (yes/no): ");
-        if (scanner.nextLine().equalsIgnoreCase("yes")) {
-            //library.displayAlbumInfo(title);
-        }
+    	currentUser.displayFrequentlyPlayed();
     }
 
     private void shuffleLibrary() {
-    	currentUser.shuffleSongs(currentUser);
+    	currentUser.shuffleSongs();
     }
 
     private void viewPlaylists() {
-    	currentUser.displayPlaylists(currentUser);
-    }
-
-    private void removeSongOrAlbum() {
-        System.out.print("Enter title of song or album to remove: ");
-        String title = scanner.nextLine();
-        currentUser.removeFromLibrary(currentUser, title);
+    	currentUser.displayPlaylists();
     }
 
     public static void main(String[] args) {
