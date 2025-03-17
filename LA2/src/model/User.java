@@ -5,9 +5,8 @@ import java.util.ArrayList;
 public class User {
 	private String userName;
 	private String password;
+	private byte[] salt;
 	private LibraryModel library;
-	// I think this needs to be the library, users don't have just an open list of songs
-	// it should be an entire library just like we were doing before we had users
 	private ArrayList<Song> songs;
 	
 	
@@ -37,6 +36,15 @@ public class User {
 	// get the password
 	public String getPassword() {
 		return password;
+	}
+	
+	// store the salt for the password
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
+	
+	public byte[] getSalt() {
+		return salt;
 	}
 
 	public void displayLibrary(int sortChoice) {
