@@ -12,8 +12,10 @@ public class LibraryModel {
 	 * 
 	 */
 	
-	// <title, SongList>
+	// <title, songs with that title>
 	private HashMap<String,ArrayList<Song>> songs;
+	// <artist, songs by artist>
+	private HashMap<String,ArrayList<Song>> artists;
 	private ArrayList<Album> albums;
 	private ArrayList<Playlist> playlists;
 	private ArrayList<Song> favoriteSongs;
@@ -22,6 +24,7 @@ public class LibraryModel {
 
 	public LibraryModel(){
 		songs = new HashMap<String,ArrayList<Song>>();
+		artists = new HashMap<String,ArrayList<Song>>();
 		albums = new ArrayList<>();
 		playlists = new ArrayList<>(); 
 		favoriteSongs = new ArrayList<>();
@@ -54,7 +57,13 @@ public class LibraryModel {
 		if (!songs.containsKey(s.getTitle())) {
 			songs.put(s.getTitle(), new ArrayList<Song>());
 		}
+		// if HashMap doesn't contain songs by this artist
+		if (!artists.containsKey(s.getArtist())) {
+			artists.put(s.getArtist(), new ArrayList<Song>());
+		}
 		songs.get(s.getTitle()).add(s);
+		artists.get(s.getArtist()).add(s);
+		
 	}
 	
 	public String addAlbumToLibrary(String albumName, String artist) {
@@ -84,42 +93,27 @@ public class LibraryModel {
 		return songName + " was added to Library";
 	}
 
-	// TODO fix this (I don't wnat to use a ton of for loops to search through hashmap
-	/*
 	// this method gets all of the songs in the library by artist
 	public String getSongsByArtist(String artist) {
 		String result = "";
-		
-		// loop through all the songs in the library
-		for (Song song: songs) {
-			if (song.getArtist().equals(artist)) {
-			result += song.getTitle() + " from album: " + song.getAlbum()+ "\n";
-			}
-		}
-		
-		if (result.equals("")) {
+		if (artists.get(artist) == null) {
 			return "No songs by " + artist; 
-		} else {
-			return "Songs by " + artist + "\n" + result;
 		}
+		for(Song s: artists.get(artist)) {
+			result += s.getTitle() + " from album: " + s.getAlbum()+ "\n";
+		}
+		return "Songs by " + artist + "\n" + result;
 	}
-	*/
+	
 	
 	// this method gets all of the songs in the library by title
 	public String getSongsByTitle(String title) {
 		String result = "";
-		// TODO do I need the first if statement (what happens if I just
-		// have the for loop and there are no songs with same title
-		if(songs.containsKey(title)) {
-			for(Song song: songs.get(title)) {
-				result += song.toString();
-			}
+		if (!songs.containsKey(title)) {return "No songs with title " + title;}
+		for(Song song: songs.get(title)) {
+			result += song.toString();
 		}
-		if (result.equals("")) {
-			return "No songs with title " + title; 
-		} else {
-			return "Songs named " + title + "\n" + result;
-		}
+		return "Songs named " + title + "\n" + result;
 	}
 	
 	public String getAlbumsByTitle(String title) {
@@ -262,25 +256,16 @@ public class LibraryModel {
 		return "Here is a list of all songs in your library\n" + str;
 	}
 	
-	//TODO change to HashMap with artist as key
-	/*
 	public String allArtists() {
 		String str = "";
-		//search through all of the songs in library
-		
-		for (Song s: songs) {
-			// check if the artist has already been added to the string
-			if (str.contains(s.getArtist()) == false) {
-				str += s.getArtist() + "\n";
-			}
-		}
-		//check if str has had any artists added to it
-		if (str.equals("")) {
+		if (artists.keySet() == null) {
 			return "No artists in library\n";
+		}
+		for(String s: artists.keySet()) {
+			str += s + "\n";
 		}
 		return "Here is a list of all artists in your library\n" + str;
 	}
-	*/
 	
 	public String allAlbums() {
 		String str = "";

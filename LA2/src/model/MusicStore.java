@@ -10,6 +10,13 @@ public final class MusicStore {
 	private static ArrayList<Album> albumList = new ArrayList<Album>();
 	private static ArrayList<Song> songList = new ArrayList<Song>();
 	
+	// helper method for testing
+	public static void empty() {
+		albumList = new ArrayList<Album>();
+		songList = new ArrayList<Song>();
+	}
+	
+	// process text file creating a list of songs and albums
 	public static void processFile() {
 		File fr = new File("albums/albums.txt");
 		Scanner scanner;

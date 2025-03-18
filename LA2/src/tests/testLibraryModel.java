@@ -2,11 +2,24 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.FileNotFoundException;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import model.LibraryModel;
-import model.Song;
+import model.MusicStore;
 
 class testLibraryModel {
+	
+	@BeforeEach
+	void setUp() {
+		MusicStore.processFile();
+	}
+	@AfterEach
+	void tearDown() {
+		MusicStore.empty();
+	}
+	
 	@Test
 	void testAddValidSongToLibrary() throws FileNotFoundException {
 		LibraryModel library = new LibraryModel();
@@ -61,6 +74,7 @@ class testLibraryModel {
 	
 	@Test
 	void testAllSongs() throws FileNotFoundException {
+		// TODO check the order specs for all songs
 		LibraryModel library = new LibraryModel();
 		
 		String str = "No songs in library\n";
@@ -69,8 +83,9 @@ class testLibraryModel {
 		library.addSongToLibrary("Tired", "Adele");
 		library.addSongToLibrary("Green Eyes", "Coldplay");
 		str = "Here is a list of all songs in your library\n" +
-						"Tired by Adele from album: 19\n"+
-						"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
+				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n" +
+						"Tired by Adele from album: 19\n";
+						
 		String returnStr = library.allSongs();
 		assertEquals(returnStr,str);
 	}
@@ -86,6 +101,7 @@ class testLibraryModel {
 		String returnStr = library.allArtists();
 		assertEquals(returnStr,str);
 	}
+	
 	
 	@Test
 	void testAllAlbums() throws FileNotFoundException {
