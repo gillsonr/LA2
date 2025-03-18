@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Playlist {
 
@@ -50,5 +51,9 @@ public class Playlist {
 			}
 		}
 		return str;
+	}
+	
+	public void shuffle() {
+		Collections.shuffle(songs);
 	}
 }

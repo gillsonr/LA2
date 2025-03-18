@@ -74,7 +74,6 @@ class testLibraryModel {
 	
 	@Test
 	void testAllSongs() throws FileNotFoundException {
-		// TODO check the order specs for all songs
 		LibraryModel library = new LibraryModel();
 		
 		String str = "No songs in library\n";
@@ -83,8 +82,8 @@ class testLibraryModel {
 		library.addSongToLibrary("Tired", "Adele");
 		library.addSongToLibrary("Green Eyes", "Coldplay");
 		str = "Here is a list of all songs in your library\n" +
-				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n" +
-						"Tired by Adele from album: 19\n";
+				"Tired by Adele from album: 19\n" +
+				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
 						
 		String returnStr = library.allSongs();
 		assertEquals(returnStr,str);

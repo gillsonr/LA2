@@ -68,12 +68,11 @@ public class User {
 	}
 
 	public void shuffleSongs() {
-		// TODO Auto-generated method stub
-		
+		library.shuffleSongs();
 	}
 
-	public void displayPlaylists() {
-		library.allPlaylists();
+	public String displayPlaylists() {
+		return library.allPlaylists();
 		
 	}
 

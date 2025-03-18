@@ -120,7 +120,7 @@ public class MusicApp {
                     shuffleLibrary();
                     break;
                 case "8":
-                    viewPlaylists();
+                	System.out.print(currentUser.displayPlaylists());;
                     break;
                 case "9":
                     removeSong();
@@ -250,10 +250,6 @@ public class MusicApp {
 
     private void shuffleLibrary() {
     	currentUser.shuffleSongs();
-    }
-
-    private void viewPlaylists() {
-    	currentUser.displayPlaylists();
     }
 
     public static void main(String[] args) {

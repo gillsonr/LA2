@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 // the LibraryModel class stores user information about what they have saved from the music store
@@ -21,6 +22,7 @@ public class LibraryModel {
 	private ArrayList<Song> favoriteSongs;
 	// timesPlayed, Song
 	private HashMap<Integer, Song> freqPlayed;
+	private ArrayList<Song> masterSongList;
 
 	public LibraryModel(){
 		songs = new HashMap<String,ArrayList<Song>>();
@@ -29,6 +31,7 @@ public class LibraryModel {
 		playlists = new ArrayList<>(); 
 		favoriteSongs = new ArrayList<>();
 		freqPlayed = new HashMap<Integer, Song>();
+		masterSongList = new ArrayList<Song>();
 	}
 	// finds song from songName and artistName in music store and creates copy
 	// if song doesn't exist, song = null
@@ -63,6 +66,7 @@ public class LibraryModel {
 		}
 		songs.get(s.getTitle()).add(s);
 		artists.get(s.getArtist()).add(s);
+		masterSongList.add(s);
 		
 	}
 	
@@ -245,10 +249,8 @@ public class LibraryModel {
 	public String allSongs() {
 		String str = "";
 		//search through all of the songs in library
-		for (String songTitle: songs.keySet()) {
-			for(Song s: songs.get(songTitle)) {
-				str += s.toString();
-			}
+		for(Song s: masterSongList) {
+			str += s.toString();
 		}
 		if (str.equals("")) {
 			return "No songs in library\n";
@@ -319,6 +321,9 @@ public class LibraryModel {
 		
 		// if the song was not found dont rate it
 		return "Song was not found";
+	}
+	public void shuffleSongs() {
+		Collections.shuffle(masterSongList);
 	}
 
 
