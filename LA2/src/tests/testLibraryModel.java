@@ -289,5 +289,47 @@ class testLibraryModel {
 						"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
 		assertEquals(str, returnStr);
 	}
+	
+	@Test
+	void testSortedByTitle() {
+		LibraryModel library = new LibraryModel();
+		library.addSongToLibrary("Politik", "Coldplay");
+		library.addSongToLibrary("Green Eyes", "Coldplay");
+		String str = "Here is your library, sorted by title\n"
+				+ "Green Eyes by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "Politik by Coldplay from album: A Rush of Blood to the Head\n";
+		String returnStr = library.sortedByTitle();
+		assertEquals(returnStr, str);
+	}
 
+	@Test
+	void testSortedByArtist() {
+		LibraryModel library = new LibraryModel();
+		library.addSongToLibrary("Green Eyes", "Coldplay");
+		library.addSongToLibrary("Tired", "Adele");
+		String str = "Here is your library, sorted by artist\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
+		String returnStr = library.sortedByArtist();
+		assertEquals(returnStr, str);
+	}
+	
+	@Test
+	void testSortedByRating() {
+		LibraryModel library = new LibraryModel();
+		library.addSongToLibrary("Green Eyes", "Coldplay");
+		library.addSongToLibrary("Tired", "Adele");
+		library.rateSong("Green Eyes", "Coldplay", 1);
+		String str = "Here is your library, sorted by rating\n"
+				+ "Unrated songs\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "\nSongs rated 1\n"
+				+ "Green Eyes by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "\nSongs rated 2\n"
+				+ "\nSongs rated 3\n"
+				+ "\nSongs rated 4\n"
+				+ "\nSongs rated 5\n";
+		String returnStr = library.sortedByRating();
+		assertEquals(returnStr, str);
+	}
 }

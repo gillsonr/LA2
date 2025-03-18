@@ -138,6 +138,9 @@ public class MusicApp {
     }
 
 
+    // TODO add the ability to add to library after searching
+    // prob just ask "do you want to add song to library" after searching
+    // default to add first song (not sure how to go about adding other songs)
     private void searchMusicStore() {
     	System.out.println("Search for song(s) in MusicStore by: "
     			+ "1. Title 2. Album 3. Artist 4. Genre");
@@ -229,9 +232,15 @@ public class MusicApp {
 
 	private void viewLibrary() {
         System.out.println("Sort library by: 1. Title 2. Artist 3. Rating");
-        int sortChoice = scanner.nextInt();
-        scanner.nextLine();
-        currentUser.displayLibrary(sortChoice);
+        String sortChoice = scanner.nextLine();
+        int choice = Integer.parseInt(sortChoice);
+        if (choice >= 1 && choice<=3) {
+        	System.out.println(currentUser.displayLibrary(choice));
+        }
+        else { 
+        	System.out.println("Invalid choice. Try again");
+        	viewLibrary();
+        }
     }
 
     private void playSong() {

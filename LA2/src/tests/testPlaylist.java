@@ -1,15 +1,7 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
-
-import model.Album;
-import model.LibraryModel;
-import model.MusicStore;
 import model.Playlist;
 import model.Song;
 

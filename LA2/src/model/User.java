@@ -6,8 +6,8 @@ public class User {
 	private String userName;
 	private String password;
 	private byte[] salt;
-	private LibraryModel library;
-	private ArrayList<Song> songs;
+	private LibraryModel library = new LibraryModel();
+	private ArrayList<Song> songs = new ArrayList<Song>();
 	
 	
 	// Constructor
@@ -47,9 +47,18 @@ public class User {
 		return salt;
 	}
 
-	public void displayLibrary(int sortChoice) {
+	//@pre must be int 1,2,or3
+	public String displayLibrary(int sortChoice) {
 		// TODO Auto-generated method stub
-		
+		switch (sortChoice) {
+			case 1:
+				return library.sortedByTitle();
+			case 2:
+				return library.sortedByArtist();
+			case 3:
+				return library.sortedByRating();
+		}
+		return null;
 	}
 
 	public void playSong(String title) {

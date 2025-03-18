@@ -67,7 +67,6 @@ public class LibraryModel {
 		songs.get(s.getTitle()).add(s);
 		artists.get(s.getArtist()).add(s);
 		masterSongList.add(s);
-		
 	}
 	
 	public String addAlbumToLibrary(String albumName, String artist) {
@@ -324,6 +323,79 @@ public class LibraryModel {
 	}
 	public void shuffleSongs() {
 		Collections.shuffle(masterSongList);
+	}
+	
+	public String sortedByTitle() {
+		if(songs.isEmpty()) {
+			return "No songs are in library\n";
+		}
+		// creates sorted list of titles
+		ArrayList<String> titles = new ArrayList<>(songs.keySet());
+	    Collections.sort(titles); 
+	    String str = "Here is your library, sorted by title\n";
+	    // adds all songs in hashmap to str in sorted order
+	    for (String t: titles) {
+	    	for(Song s: songs.get(t)) {
+	    		str += s.toString();
+	    	}
+	    }
+		return str;
+		
+	}
+	public String sortedByArtist() {
+		if(artists.isEmpty()) {
+			return "No songs are in library\n";
+		}
+		// creates sorted list of artists
+		ArrayList<String> artistNames = new ArrayList<>(artists.keySet());
+	    Collections.sort(artistNames); 
+	    String str = "Here is your library, sorted by artist\n";
+	    // adds all songs in hashmap to str in sorted order
+	    for (String name: artistNames) {
+	    	for(Song s: artists.get(name)) {
+	    		str += s.toString();
+	    	}
+	    }
+		return str;
+	}
+	public String sortedByRating() {
+		// 6 rowed 2D array list, rows correspond with rating
+		ArrayList<ArrayList<Song>> ratings = new ArrayList<ArrayList<Song>>();
+		ratings.add(new ArrayList<Song>());
+		ratings.add(new ArrayList<Song>());
+		ratings.add(new ArrayList<Song>());
+		ratings.add(new ArrayList<Song>());
+		ratings.add(new ArrayList<Song>());
+		ratings.add(new ArrayList<Song>());
+		for(Song s: masterSongList) {
+			// adds song to their corresponding ArrayList
+			if( s.getRating() == null) {
+				ratings.get(0).add(s);
+			}
+			else {
+				switch(s.getRating()) {
+					case ONE:   ratings.get(1).add(s); break;
+					case TWO:   ratings.get(2).add(s); break;
+					case THREE: ratings.get(3).add(s); break;
+					case FOUR:  ratings.get(4).add(s); break;
+					case FIVE:  ratings.get(5).add(s); break;
+					default:
+						// if no rating, add to 0 index
+						ratings.get(0).add(s);
+						break;
+				}
+			}
+		}
+		String str = "Here is your library, sorted by rating\n";
+		// 2D for loop through ratings
+		for (int row = 0; row < ratings.size(); row ++){
+			if (row == 0) { str += "Unrated songs\n";}
+			else { str += "\nSongs rated " + row + "\n";}
+			for (Song s: ratings.get(row)) {
+				str += s.toString();
+			}
+		}
+		return str;
 	}
 
 
