@@ -10,48 +10,64 @@ public final class MusicStore {
 	private static ArrayList<Album> albumList = new ArrayList<Album>();
 	private static ArrayList<Song> songList = new ArrayList<Song>();
 	
-	public static void processFile() throws FileNotFoundException {
+	// helper method for testing
+	public static void empty() {
+		albumList = new ArrayList<Album>();
+		songList = new ArrayList<Song>();
+	}
+	
+	// process text file creating a list of songs and albums
+	public static void processFile() {
 		File fr = new File("albums/albums.txt");
-		Scanner scanner = new Scanner(fr);
-		
-		while(scanner.hasNextLine()) {
-			String line = scanner.nextLine();
-			line = line.replace(",", "_");
-			line += ".txt";
-			line = "albums/" + line;
-			
-			
-			processAlbum(line);
-		}
-		
+		Scanner scanner;
+		try {
+			scanner = new Scanner(fr);
+			while(scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				line = line.replace(",", "_");
+				line += ".txt";
+				line = "albums/" + line;
+				
+				
+				processAlbum(line);
+			}
 		scanner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// creates album, songs, and artist objects
-	private static void processAlbum(String line) throws FileNotFoundException {
+	private static void processAlbum(String line){
 		File fr = new File(line);
-		Scanner scanner = new Scanner(fr);
-		
-		// first line = album, artist, genre, year
-		String firstLine = scanner.nextLine();
-		String[] firstLineArray = firstLine.split(",");
-		String albumTitle = firstLineArray[0];
-		String artistName = firstLineArray[1];
-		String genre = firstLineArray[2];
-		int year = Integer.parseInt(firstLineArray[3]);
-		// each line has song title
-		ArrayList<Song> songs = new ArrayList<Song>();
-		while(scanner.hasNext()) {
-			// adds new song from line
-			Song s = new Song(scanner.nextLine(), artistName, albumTitle);
-			songs.add(s);
-			songList.add(s);
+		Scanner scanner;
+		try {
+			scanner = new Scanner(fr);
+			// first line = album, artist, genre, year
+			String firstLine = scanner.nextLine();
+			String[] firstLineArray = firstLine.split(",");
+			String albumTitle = firstLineArray[0];
+			String artistName = firstLineArray[1];
+			String genre = firstLineArray[2];
+			int year = Integer.parseInt(firstLineArray[3]);
+			// each line has song title
+			ArrayList<Song> songs = new ArrayList<Song>();
+			while(scanner.hasNext()) {
+				// adds new song from line
+				Song s = new Song(scanner.nextLine(), artistName, albumTitle);
+				songs.add(s);
+				songList.add(s);
+			}
+			Album album = new Album(albumTitle, artistName, songs, genre, year);
+			albumList.add(album);
+			
+			
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		Album album = new Album(albumTitle, artistName, songs, genre, year);
-		albumList.add(album);
-		
-		
-		scanner.close();
 	}
 	
 	// searches through artists until finding artist with desired name
@@ -92,7 +108,7 @@ public final class MusicStore {
 		}
 		String str = "";
 		for (Album a: albums) {
-			str = a.toString();
+			str += a.toString();
 		}
 		return str;
 	}
@@ -103,6 +119,9 @@ public final class MusicStore {
 			if(s.getTitle().equals(title)) {
 				str += s.toString();
 			}
+		}
+		if(str == "") {
+			return "No songs found with title " + title;
 		}
 		return str;
 	}
@@ -129,6 +148,25 @@ public final class MusicStore {
 		String str = "";
 		for (Song s: songs) {
 			str += s.toString();
+		}
+		return str;
+	}
+	
+	public static String getSongsByGenre(String genre) {
+		ArrayList<Album> albums = new ArrayList<Album>();
+		for (Album a: albumList) {
+			if (a.getGenre().equalsIgnoreCase(genre)) {
+				albums.add(a);
+			}
+		}
+		String str = "";
+		for(Album a: albums) {
+			for (Song s: a.getSongs()) {
+				str += s.toString();
+			}
+		}
+		if(str == "") {
+			return "No songs found\n";
 		}
 		return str;
 	}

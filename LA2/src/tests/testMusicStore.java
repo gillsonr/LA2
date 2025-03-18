@@ -1,16 +1,24 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.FileNotFoundException;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import model.Album;
 import model.MusicStore;
 
 class testMusicStore {
-
+	
+	@BeforeEach
+	void setUp() {
+		MusicStore.processFile();
+	}
+	@AfterEach
+	void tearDown() {
+		MusicStore.empty();
+	}
+	
 	@Test
 	void testGetAlbumByTitle(){
 		String str = "Begin Again by Norah Jones, 2018, Pop\n"

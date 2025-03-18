@@ -5,9 +5,8 @@ import java.util.ArrayList;
 public class User {
 	private String userName;
 	private String password;
+	private byte[] salt;
 	private LibraryModel library;
-	// I think this needs to be the library, users don't have just an open list of songs
-	// it should be an entire library just like we were doing before we had users
 	private ArrayList<Song> songs;
 	
 	
@@ -38,40 +37,71 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
+	
+	// store the salt for the password
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
+	
+	public byte[] getSalt() {
+		return salt;
+	}
 
 	public void displayLibrary(int sortChoice) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void playSong(User currentUser, String title) {
+	public void playSong(String title) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void displayRecentlyPlayed(User currentUser) {
+	public void displayRecentlyPlayed() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void displayFrequentlyPlayed(User currentUser) {
+	public void displayFrequentlyPlayed() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void shuffleSongs(User currentUser) {
+	public void shuffleSongs() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void displayPlaylists(User currentUser) {
+	public void displayPlaylists() {
+		library.allPlaylists();
+		
+	}
+
+	public void removeAlbumFromLibrary(String title) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void removeFromLibrary(User currentUser, String title) {
+	public void removeSongFromLibrary(String title) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void searchAlbum(String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void searchArtist(String artist) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void searchGenre(String genre) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 }
