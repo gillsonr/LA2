@@ -161,13 +161,16 @@ public final class MusicStore {
 		}
 		String str = "";
 		for(Album a: albums) {
-			for (Song s: a.getSongs()) {
-				str += s.toString();
-			}
+			str += a.toString(); 
 		}
 		if(str == "") {
 			return "No songs found\n";
 		}
 		return str;
+	}
+
+	public static void displayAlbumInfo(String title) {
+		// TODO Auto-generated method stub
+		
 	}
 }

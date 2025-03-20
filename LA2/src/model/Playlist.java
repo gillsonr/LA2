@@ -17,18 +17,18 @@ public class Playlist {
 	    return playlistName;
 	}
 
-	// adds song if not already in playlist
-	public void addSong(Song song) {
-		// check if song already in playlist	
-		boolean inPlaylist = false;
+	// adds song if not already in playlist, 
+	//returns true if added, false otherwise
+	public boolean addSong(Song song) {
+		// check if song already in playlist
 		for (Song s: songs) {
 			if (s.equals(song)) {
-				inPlaylist = true;
+				return false;
 			}
 		}
-	    if (inPlaylist == false) {
-	        songs.add(song);
-	    }
+	    songs.add(song);
+	    return true;
+	    
 	}
 	
 	public String removeSong(String title, String artist) {
@@ -40,12 +40,13 @@ public class Playlist {
 	    }
 	    return title + " was not found\n"; 
 	}
-
+	
 	public String getSongs() {
 		String str = "";
 		if (songs.isEmpty()) {
-			return "This playlist is empty\n";
+			return playlistName + " is empty\n";
 		} else {
+			str += "Here is a list of songs in " + playlistName + "\n";
 			for(Song s: songs) {
 				str += s.toString();
 			}

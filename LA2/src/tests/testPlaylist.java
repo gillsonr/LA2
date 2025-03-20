@@ -19,11 +19,11 @@ class testPlaylist {
 		Song s = new Song("Big Sur", "Jack Johnson", "All The Light Above It Too");
 
 		// tests empty playlist
-		assertEquals(playlist.getSongs(), "This playlist is empty\n");
+		assertEquals(playlist.getSongs(), "test is empty\n");
 		playlist.addSong(s);
 		
 		// tests playlist w/ song
-		assertEquals(playlist.getSongs(), s.toString());
+		assertEquals(playlist.getSongs(), "Here is a list of songs in test\n" +s.toString());
 	}
 	
 	@Test

@@ -18,8 +18,10 @@ public class LibraryModel {
 	// <artist, songs by artist>
 	private HashMap<String,ArrayList<Song>> artists;
 	private ArrayList<Album> albums;
+	
+	// Collection of playlist or album (includes playlists for each genre)
+	private HashMap<String,Playlist> collection;
 	private ArrayList<Playlist> playlists;
-	private ArrayList<Song> favoriteSongs;
 	// timesPlayed, Song
 	private HashMap<Integer, Song> freqPlayed;
 	private ArrayList<Song> masterSongList;
@@ -29,9 +31,12 @@ public class LibraryModel {
 		artists = new HashMap<String,ArrayList<Song>>();
 		albums = new ArrayList<>();
 		playlists = new ArrayList<>(); 
-		favoriteSongs = new ArrayList<>();
 		freqPlayed = new HashMap<Integer, Song>();
 		masterSongList = new ArrayList<Song>();
+		
+		collection = new HashMap<String, Playlist>();
+		collection.put("favorites", new Playlist("favorites"));
+		
 	}
 	// finds song from songName and artistName in music store and creates copy
 	// if song doesn't exist, song = null
@@ -64,6 +69,7 @@ public class LibraryModel {
 		if (!artists.containsKey(s.getArtist())) {
 			artists.put(s.getArtist(), new ArrayList<Song>());
 		}
+		
 		songs.get(s.getTitle()).add(s);
 		artists.get(s.getArtist()).add(s);
 		masterSongList.add(s);
@@ -78,8 +84,12 @@ public class LibraryModel {
 		}
 		Album a = MusicStore.getAlbumByTitleAndArtist(albumName, artist);
 		albums.add(a);
+		// TODO test add song to genre playlists
+		collection.put(a.getGenre(), new Playlist(a.getGenre()));
 		for(Song s: a.getSongs()) {
 			addSong(s);
+			collection.get(a.getGenre()).addSong(s);
+			
 		}
 		return albumName + " successfully added\n";
 	}
@@ -165,11 +175,6 @@ public class LibraryModel {
 			if (p.getName().equals(playlistName)) {
 				Song song = createSong(songTitle, artist);
 				
-				//check if song is in playlist
-				if (p.getSongs().contains(songTitle) && p.getSongs().contains(artist)) {
-					return "Song already in playlist";
-				}
-				
 				//check if song is in the music library	
 				for (Song s: songs.get(songTitle)) {
 					if (s.getArtist().equals(artist)) {
@@ -180,9 +185,13 @@ public class LibraryModel {
 				if (!songFound) {
 					return "Song is not in library";
 				}
+				else if (p.addSong(song)) {
+					return songTitle + " has been added to playlist" + playlistName + "\n"; 
+				}
+				else {
+					return "Song already in playlist";
+				}
 				
-				p.addSong(song);
-				return songTitle + " has been added to playlist" + playlistName + "\n";
 			}
 		}
 		// if the playlist does not exist
@@ -223,7 +232,7 @@ public class LibraryModel {
 	public String getPlaylistByName(String name) {
 		for (Playlist p : playlists) {
 			if (p.getName().equals(name)) {
-				return p.getName() + "\n" + p.getSongs();
+				return p.getSongs();
 			}
 		}
 		// if the playlist does not exist
@@ -293,15 +302,8 @@ public class LibraryModel {
 	}
 	
 	public String favoriteSongs() {
-		String str = "";
-		//search through all of the songs in library
-		for (Song s: favoriteSongs) {
-			str += s.toString();
-		}
-		if (str.equals("")) {
-			return "No favorites in library\n";
-		}
-		return "Here is a list of all favorites in your library\n" + str;
+		return collection.get("favorites").getSongs();
+		
 	}
 	
 	public String rateSong(String title, String artist, int rating) {
@@ -310,9 +312,10 @@ public class LibraryModel {
 			if (s.getArtist().equals(artist)) {
 				//rate the song and tell the user it has been rated
 				s.setRating(rating);
-				//add the song to the list of favorite songs
-				if (rating == 5) {
-					favoriteSongs.add(s);
+				//add the song to the list of favorites
+				// TODO test that this still works with rating == 4
+				if (rating == 5 || rating == 4) {
+					collection.get("favorites").addSong(s);
 				}
 				return title + "has been rated\n";
 			}
@@ -379,10 +382,6 @@ public class LibraryModel {
 					case THREE: ratings.get(3).add(s); break;
 					case FOUR:  ratings.get(4).add(s); break;
 					case FIVE:  ratings.get(5).add(s); break;
-					default:
-						// if no rating, add to 0 index
-						ratings.get(0).add(s);
-						break;
 				}
 			}
 		}
@@ -397,6 +396,8 @@ public class LibraryModel {
 		}
 		return str;
 	}
-
+	
+	//public String search
+	
 
 }

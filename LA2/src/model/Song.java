@@ -36,6 +36,11 @@ public class Song {
 	public String getAlbum() {
 		return album;
 	}
+	
+	public String playSong() {
+		timesPlayed ++;
+		return "Now playing " + title + " by " + artist + "\n";
+	}
 
 	// @pre rating >= 1, rating <= 5
 	public void setRating(int rating) {

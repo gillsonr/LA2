@@ -23,6 +23,20 @@ public class Album {
 	public String getTitle() {
 		return title;
 	}
+	
+	// adds song if not already in playlist
+		public void addSong(Song song) {
+			// check if song already in playlist	
+			boolean inPlaylist = false;
+			for (Song s: songList) {
+				if (s.equals(song)) {
+					inPlaylist = true;
+				}
+			}
+		    if (inPlaylist == false) {
+		        songList.add(song);
+		    }
+		}
 
 	// returns a deep copy of the songs in the album
 	public ArrayList<Song> getSongs(){

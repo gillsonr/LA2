@@ -213,7 +213,7 @@ class testLibraryModel {
 		LibraryModel library = new LibraryModel();
 		library.createPlaylist("ALT");
 		String returnStr = library.getPlaylistByName("ALT");
-		String str = "ALT\nThis playlist is empty\n";
+		String str = "ALT is empty\n";
 		assertEquals(returnStr, str);
 		
 		// test non existent playlist
@@ -228,7 +228,8 @@ class testLibraryModel {
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
 		library.addSongToPlaylist("ALT", "A Whisper", "Coldplay");
 		String returnStr = library.getPlaylistByName("ALT");
-		String str = "ALT\nA Whisper by Coldplay from album: A Rush of Blood to the Head\n";
+		String str = "Here is a list of songs in ALT\n"
+				+ "A Whisper by Coldplay from album: A Rush of Blood to the Head\n";
 		assertEquals(returnStr, str);
 	}
 	
@@ -239,7 +240,7 @@ class testLibraryModel {
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
 		library.addAlbumToPlaylist("ALT", "A Rush of Blood to the Head", "Coldplay");
 		String returnStr = library.getPlaylistByName("ALT");
-		String str = "ALT\n"
+		String str = "Here is a list of songs in ALT\n"
 				+ "Politik by Coldplay from album: A Rush of Blood to the Head\n"
 				+ "In My Place by Coldplay from album: A Rush of Blood to the Head\n"
 				+ "God Put a Smile Upon Your Face by Coldplay from album: A Rush of Blood to the Head\n"
@@ -281,11 +282,11 @@ class testLibraryModel {
 	@Test
 	void testFavoriteSongs() throws FileNotFoundException {
 		LibraryModel library = new LibraryModel();
-		assertEquals(library.favoriteSongs(), "No favorites in library\n");
+		assertEquals(library.favoriteSongs(), "favorites is empty\n");
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
 		library.rateSong("Green Eyes", "Coldplay", 5);
 		String returnStr = library.favoriteSongs();
-		String str = "Here is a list of all favorites in your library\n"+ 
+		String str = "Here is a list of songs in favorites\n"+ 
 						"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
 		assertEquals(str, returnStr);
 	}
@@ -332,4 +333,6 @@ class testLibraryModel {
 		String returnStr = library.sortedByRating();
 		assertEquals(returnStr, str);
 	}
+	
+	
 }

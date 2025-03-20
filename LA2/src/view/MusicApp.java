@@ -1,8 +1,6 @@
 package view;
 
-import java.io.FileNotFoundException;
 import java.util.*;
-
 import model.MusicStore;
 import model.User;
 import model.UserDatabase;
@@ -142,32 +140,43 @@ public class MusicApp {
     // prob just ask "do you want to add song to library" after searching
     // default to add first song (not sure how to go about adding other songs)
     private void searchMusicStore() {
-    	System.out.println("Search for song(s) in MusicStore by: "
-    			+ "1. Title 2. Album 3. Artist 4. Genre");
+    	System.out.println("Search in musci store or library?");
+    	System.out.println("Search for 1. song(s) or 2. album(s) in MusicStore?");
+    	System.out.print("Enter choice: ");
+    	String songOrAlbum = scanner.nextLine();
+    	System.out.println("Search by 1. Title 2. Artist 3. Genre");
     	System.out.print("Enter choice: ");
     	String searchType = scanner.nextLine();
-    	System.out.println();
         switch(searchType) {
 	        case "1":
 	        	System.out.print("Enter Song Title to search: ");
 	            String title = scanner.nextLine();
-	            System.out.print(MusicStore.getSongsByTitle(title));
-	            System.out.print("Would you like to view album details? (yes/no): ");
-	            if (scanner.nextLine().equalsIgnoreCase("yes")) {
-	                //MusicStore.displayAlbumInfo(title);
+	            // searching for songs
+	            if(songOrAlbum.equals("1")) {
+	            	System.out.print(MusicStore.getSongsByTitle(title));
+		            System.out.print("Would you like to view album details? (yes/no): ");
+		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
+		                MusicStore.displayAlbumInfo(title);
+		            }
+		            System.out.print("Would you like to add song to library? (yes/no): ");
+		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
+		                currentUser.addSongToLibrary(title);
+		            }
+		        	break;
 	            }
-	        	break;
+	            else if (songOrAlbum.equals("2")){
+	            	System.out.print(MusicStore.getAlbumsByTitle(title));
+	            }
+	            else {
+	            	System.out.println("Invalid choice. Try again.");
+		        	searchMusicStore();
+	            }
 	        case "2":
-	        	System.out.print("Enter Album to search: ");
-	            String album = scanner.nextLine();
-	            System.out.print(MusicStore.getAlbumsByTitle(album));
-	        	break;
-	        case "3":
 	        	System.out.print("Enter Artist to search: ");
 	            String artist = scanner.nextLine();
 	            System.out.print(MusicStore.getSongsByArtist(artist));
 	        	break;
-	        case "4":
+	        case "3":
 	        	System.out.print("Enter Genre to search: ");
 	            String genre = scanner.nextLine();
 	            System.out.print(MusicStore.getSongsByGenre(genre));
