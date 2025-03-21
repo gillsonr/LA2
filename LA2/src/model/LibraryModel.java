@@ -370,7 +370,101 @@ public class LibraryModel {
 		return str;
 	}
 	
-	//public String search
+	public String playSong(String title, String artist) {
+		if(!songs.containsKey(title)) {
+			return "Song is not in library\n";
+		}
+
+		Song song = new Song("temp","temp","temp");
+		for (Song s : songs.get(title)){
+			if (s.getArtist().equals(artist)) {
+				song = s;
+				break;
+			}
+		}
+		// inserts song to Recently Played playlist
+		collection.get("Recently Played").insertSong(song);
+		freqPlayed(song);
+		
+		return song.playSong();
+	}
 	
+	// adds song to freqPlayed if applicable 
+	public void freqPlayed(Song song) {
+		System.out.print(song.getPlays() + " title: " + song.getTitle() + "\n");
+		// finds song
+//		for (Song s : songs.get(song.getTitle())){
+//			if (s.getArtist().equals(song.getArtist())) {
+//				song = s;
+//				break;
+//			}
+//		}
+		// if freq played < 10 songs, add to song 
+		ArrayList<Song> freqPlayed = collection.get("Frequently Played").deepCopy();
+		
+		boolean found = false;
+		int index = 0;
+		while (index < freqPlayed.size()) {
+			// if already in freqPlayed, exit method (no action needed)
+			if(freqPlayed.get(index).getTitle().equals(song.getTitle()) &&
+				freqPlayed.get(index).getArtist().equals(song.getArtist())	) {
+				return;
+			}
+			else if(freqPlayed.get(index).getPlays() <= song.getPlays()) {
+				collection.get("Frequently Played").insertSong(song, index);
+				found = true;
+				break;
+			}
+			index ++;
+		}
+		
+		// song was not added to frequently played,
+		//so if it is full, freqPlayed will still be 9
+		if (freqPlayed.size()>9) {
+			collection.get("Frequently Played").removeLastSong();
+		}
+		// if found == false
+		if (!found) {
+			collection.get("Frequently Played").addSong(song);
+		}
+		
+	}
+	
+	
+	public String displayRecentlyPlayed() {
+		return collection.get("Recently Played").getSongs();
+	}
+	
+	public String displayFrequentlyPlayed() {
+		return collection.get("Frequently Played").getSongs();
+	}
+	
+	public String removeSongFromLibrary(String title, String artist) {
+		for (Song s: masterSongList) {
+			if (s.getTitle().equals(title) && s.getArtist().equals(artist)) {
+				masterSongList.remove(s);
+				for (Song a: songs.get(title)) {
+					if (a.getArtist().equals(artist)) {
+						songs.get(title).remove(a);
+						return "Song Removed";
+					}
+				}
+			}
+		} return "Song not found";
+		
+	}
+	
+	public String removeAlbumFromLibrary(String album, String artist) {
+		boolean found = false;
+		for (Song s: masterSongList) {
+			if (s.getAlbum().equals(album) && s.getArtist().equals(artist)) {
+				removeSongFromLibrary(s.getTitle(), artist);
+				found = true;
+			}
+		}
+		if (found) {
+			return "Album removed";
+		}  return "Album not found"; 
+	}
 
 }

@@ -85,12 +85,12 @@ public class User {
 		
 	}
 
-	public void removeAlbumFromLibrary(String title) {
+	public void removeAlbumFromLibrary(String title, String artist) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void removeSongFromLibrary(String title) {
+	public void removeSongFromLibrary(String title, String artist) {
 		// TODO Auto-generated method stub
 		
 	}

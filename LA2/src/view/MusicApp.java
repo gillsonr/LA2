@@ -230,13 +230,15 @@ public class MusicApp {
 	private void removeSong() {
     	System.out.print("Enter title of song to remove: ");
         String title = scanner.nextLine();
-        currentUser.removeSongFromLibrary(title);
+        // TODO fix
+        currentUser.removeSongFromLibrary(title, "");
 	}
 
 	private void removeAlbum() {
 		System.out.print("Enter title of album to remove: ");
         String title = scanner.nextLine();
-        currentUser.removeAlbumFromLibrary(title);
+        // TODO fix
+        currentUser.removeAlbumFromLibrary(title, "");
 	}
 
 	private void viewLibrary() {

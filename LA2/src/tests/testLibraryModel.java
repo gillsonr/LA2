@@ -352,5 +352,78 @@ class testLibraryModel {
 		assertEquals(returnStr, str);
 	}
 	
+	@Test
+	void testRecentlyPlayed() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		assertEquals(library.displayRecentlyPlayed(), "Recently Played is empty\n");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Best for Last", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		assertEquals(library.displayRecentlyPlayed(), "Here is a list of songs in Recently Played\n"
+				+ "Daydreamer by Adele from album: 19\n"
+				+ "Best for Last by Adele from album: 19\n");
+		library.playSong("Chasing Pavements", "Adele");
+		library.playSong("Cold Shoulder", "Adele");
+		library.playSong("Crazy for You", "Adele");
+		library.playSong("First Love", "Adele");
+		library.playSong("Right as Rain", "Adele");
+		library.playSong("Hometown Glory", "Adele");
+		library.playSong("Tired", "Adele");
+		library.playSong("My Same", "Adele");
+		library.playSong("Make You Feel My Love", "Adele");
+		assertEquals(library.displayRecentlyPlayed(), "Here is a list of songs in Recently Played\n"
+				+ "Make You Feel My Love by Adele from album: 19\n"
+				+ "My Same by Adele from album: 19\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "Hometown Glory by Adele from album: 19\n"
+				+ "Right as Rain by Adele from album: 19\n"
+				+ "First Love by Adele from album: 19\n"
+				+ "Crazy for You by Adele from album: 19\n"
+				+ "Cold Shoulder by Adele from album: 19\n"
+				+ "Chasing Pavements by Adele from album: 19\n"
+				+ "Daydreamer by Adele from album: 19\n");
+	}
 	
+	@Test
+	void testFrequentlyPlayed() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		assertEquals(library.displayRecentlyPlayed(), "Recently Played is empty\n");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Best for Last", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Best for Last", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		assertEquals(library.displayFrequentlyPlayed(), "Here is a list of songs in Frequently Played\n"
+				+ "Daydreamer by Adele from album: 19\n"
+				+ "Best for Last by Adele from album: 19\n");
+		library.playSong("Chasing Pavements", "Adele");
+		library.playSong("Cold Shoulder", "Adele");
+		library.playSong("Crazy for You", "Adele");
+		library.playSong("First Love", "Adele");
+		library.playSong("Right as Rain", "Adele");
+		library.playSong("Hometown Glory", "Adele");
+		library.playSong("Tired", "Adele");
+		library.playSong("My Same", "Adele");
+		library.playSong("Make You Feel My Love", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		assertEquals(library.displayFrequentlyPlayed(), "Here is a list of songs in Frequently Played\n"
+				+ "Daydreamer by Adele from album: 19\n"
+				+ "Best for Last by Adele from album: 19\n"
+				+ "Chasing Pavements by Adele from album: 19\n"
+				+ "Cold Shoulder by Adele from album: 19\n"
+				+ "Crazy for You by Adele from album: 19\n"
+				+ "First Love by Adele from album: 19\n"
+				+ "Right as Rain by Adele from album: 19\n"
+				+ "Hometown Glory by Adele from album: 19\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "Make You Feel My Love by Adele from album: 19\n");
+	}
 }

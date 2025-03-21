@@ -16,6 +16,30 @@ public class Playlist {
 	public String getName() {
 	    return playlistName;
 	}
+	
+	public int getSize() {
+		return songs.size();
+	}
+	
+	public ArrayList<Song> deepCopy(){
+		ArrayList<Song> newList = new ArrayList<Song>();
+		for (Song s: songs) {
+			newList.add(s.createCopy());
+		}
+		return newList;
+	}
+	
+	// for Recently Played
+	public void insertSong(Song s) {
+		if (songs.size() > 9) {
+			songs.remove(9);
+		} 
+		// if the song exist in the list move it to the front
+		removeSong(s.getTitle(), s.getArtist());
+		
+		songs.addFirst(s);
+	}
+	
 
 	// adds song if not already in playlist, 
 	//returns true if added, false otherwise
@@ -54,7 +78,18 @@ public class Playlist {
 		return str;
 	}
 	
+	// shuffles the collection of songs
 	public void shuffle() {
 		Collections.shuffle(songs);
+	}
+
+	// add the song at the given index
+	public void insertSong(Song song, int index) {
+		songs.add(index, song);
+		
+	}
+
+	public void removeLastSong() {
+		songs.remove(songs.size()-1);
 	}
 }
