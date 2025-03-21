@@ -69,9 +69,9 @@ public class UserDatabase {
 		users.put(username,newUser);
 		
 		// write the new user to User.txt
-		try(FileWriter fw = new FileWriter("User.txt", true)){
+		try(FileWriter fw = new FileWriter("User", true)){
 			//TODO check salt
-			fw.write(username+","+encodedPassword+","+ byteToHex(salt)+"\n");
+			fw.write(username+","+encodedPassword+","+salt);
 		} catch (IOException e) {
 			System.out.println("Error writing to file");
 		}
@@ -141,15 +141,6 @@ public class UserDatabase {
 		}
 		
 		return bytes;
-	}
-	
-	// convert a byte are to a hexadecimal string
-	public String byteToHex(byte[] bytes) {
-		String hex = "";
-		for (int i = 0; i < bytes.length; i ++) {
-			hex = hex + String.format("%02x", bytes[i]);
-		}
-		return hex;
 	}
 
 }

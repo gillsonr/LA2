@@ -110,6 +110,11 @@ public class User {
 		
 	}
 
+	public void addSongToLibrary(String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 }

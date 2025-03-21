@@ -19,15 +19,15 @@ public class Playlist {
 
 	// adds song if not already in playlist, 
 	//returns true if added, false otherwise
-	public boolean addSong(Song song) {
+	public String addSong(Song song) {
 		// check if song already in playlist
 		for (Song s: songs) {
 			if (s.equals(song)) {
-				return false;
+				return "Song already in playlist";
 			}
 		}
 	    songs.add(song);
-	    return true;
+	    return song.getTitle() + " has been added to playlist " + playlistName;
 	    
 	}
 	
@@ -35,7 +35,7 @@ public class Playlist {
 	    for(Song s: songs) {
 	    	if(s.getTitle().equals(title) && s.getArtist().equals(artist)) {
 	    		songs.remove(s);
-	    		return title + " was removed\n";
+	    		return title + " has been removed from: " + playlistName + "\n";
 	    	}
 	    }
 	    return title + " was not found\n"; 
