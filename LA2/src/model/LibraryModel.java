@@ -102,13 +102,17 @@ public class LibraryModel {
 	// this method gets all of the songs in the library by artist
 	public String getSongsByArtist(String artist) {
 		String result = "";
-		if (artists.get(artist) == null) {
-			return "No songs by " + artist; 
+		if (artists.containsKey(artist)) {
+			for(Song s: artists.get(artist)) {
+				result += s.getTitle() + " from album: " + s.getAlbum()+ "\n";
+			}
+			// if no songs were added to result, Library doesn't contain any songs by them
+			if (result.equals("")) {
+				return "No songs by " + artist; 
+			}
+			return "Songs by " + artist + "\n" + result;
 		}
-		for(Song s: artists.get(artist)) {
-			result += s.getTitle() + " from album: " + s.getAlbum()+ "\n";
-		}
-		return "Songs by " + artist + "\n" + result;
+		return "No songs by " + artist; 
 	}
 	
 	
@@ -391,14 +395,6 @@ public class LibraryModel {
 	
 	// adds song to freqPlayed if applicable 
 	public void freqPlayed(Song song) {
-		System.out.print(song.getPlays() + " title: " + song.getTitle() + "\n");
-		// finds song
-//		for (Song s : songs.get(song.getTitle())){
-//			if (s.getArtist().equals(song.getArtist())) {
-//				song = s;
-//				break;
-//			}
-//		}
 		// if freq played < 10 songs, add to song 
 		ArrayList<Song> freqPlayed = collection.get("Frequently Played").deepCopy();
 		
@@ -441,39 +437,66 @@ public class LibraryModel {
 	
 	public String removeSongFromLibrary(String title, String artist) {
 		for (Song s: masterSongList) {
+			// if song is found, remove from hashmap of songs and masterSongList
 			if (s.getTitle().equals(title) && s.getArtist().equals(artist)) {
 				masterSongList.remove(s);
-				for (Song a: songs.get(title)) {
-					if (a.getArtist().equals(artist)) {
-						songs.get(title).remove(a);
-						return "Song Removed\n";
-					}
-				}
+				removeSongFromArtistList(title,artist);
+				// returns "Song Removed\n" in this case, because we know song will be found
+				return removeSongFromHashMap(title, artist);
 			}
 		} return "Song not found\n";
 		
 	}
 	
+	public String removeSongFromHashMap(String title, String artist) {
+		if (songs.containsKey(title)) {
+			for (Song s: songs.get(title)) {
+				if (s.getArtist().equals(artist)) {
+					songs.get(title).remove(s);
+					return "Song Removed\n";
+				}
+			}
+		}
+		return "Song not found\n";
+	}
+	public String removeSongFromArtistList(String title, String artist) {
+		if (artists.containsKey(artist)) {
+			for (Song s: artists.get(artist)) {
+				if (s.getTitle().equals(title)) {
+					artists.get(artist).remove(s);
+					return "Song Removed\n";
+				}
+			}
+		}
+		return "Song not found\n";
+	}
+	
 	public String removeAlbumFromLibrary(String album, String artist) {
 		boolean found = false;
-		// TODO fix, masterSongList is changed while using another method that uses it, not allowed
+		ArrayList<Song> songsFound = new ArrayList<Song>();
 		for (Song s: masterSongList) {
 			if (s.getAlbum().equals(album) && s.getArtist().equals(artist)) {
-				removeSongFromLibrary(s.getTitle(), artist);
+				removeSongFromHashMap(s.getTitle(), s.getArtist());
+				removeSongFromArtistList(s.getTitle(), s.getArtist());
+				songsFound.add(s);
 				found = true;
 			}
 		}
 		if (found) {
-			// if the album is found, remove it from list of albums
+			// remove any songs from album
+			for(Song s: songsFound) {
+				masterSongList.remove(s);
+			}
+			// remove album from list of albums
 			for(Album a: albums) {
 				if (a.getArtist().equals(artist) && a.getTitle().equals(album)) {
 					albums.remove(a);
 					break;
 				}
 			}
-			return "Album removed";
+			return "Album Removed\n";
 		} 
-		return "Album not found"; 
+		return "Album not found\n"; 
 	}
 
 }
