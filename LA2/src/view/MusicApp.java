@@ -1,8 +1,6 @@
 package view;
 
-import java.io.FileNotFoundException;
 import java.util.*;
-
 import model.MusicStore;
 import model.User;
 import model.UserDatabase;
@@ -120,7 +118,7 @@ public class MusicApp {
                     shuffleLibrary();
                     break;
                 case "8":
-                    viewPlaylists();
+                	System.out.print(currentUser.displayPlaylists());;
                     break;
                 case "9":
                     removeSong();
@@ -138,33 +136,47 @@ public class MusicApp {
     }
 
 
+    // TODO add the ability to add to library after searching
+    // prob just ask "do you want to add song to library" after searching
+    // default to add first song (not sure how to go about adding other songs)
     private void searchMusicStore() {
-    	System.out.println("Search for song(s) in MusicStore by: "
-    			+ "1. Title 2. Album 3. Artist 4. Genre");
+    	System.out.println("Search in musci store or library?");
+    	System.out.println("Search for 1. song(s) or 2. album(s) in MusicStore?");
+    	System.out.print("Enter choice: ");
+    	String songOrAlbum = scanner.nextLine();
+    	System.out.println("Search by 1. Title 2. Artist 3. Genre");
     	System.out.print("Enter choice: ");
     	String searchType = scanner.nextLine();
-    	System.out.println();
         switch(searchType) {
 	        case "1":
 	        	System.out.print("Enter Song Title to search: ");
 	            String title = scanner.nextLine();
-	            System.out.print(MusicStore.getSongsByTitle(title));
-	            System.out.print("Would you like to view album details? (yes/no): ");
-	            if (scanner.nextLine().equalsIgnoreCase("yes")) {
-	                //MusicStore.displayAlbumInfo(title);
+	            // searching for songs
+	            if(songOrAlbum.equals("1")) {
+	            	System.out.print(MusicStore.getSongsByTitle(title));
+		            System.out.print("Would you like to view album details? (yes/no): ");
+		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
+		                MusicStore.displayAlbumInfo(title);
+		            }
+		            System.out.print("Would you like to add song to library? (yes/no): ");
+		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
+		                currentUser.addSongToLibrary(title);
+		            }
+		        	break;
 	            }
-	        	break;
+	            else if (songOrAlbum.equals("2")){
+	            	System.out.print(MusicStore.getAlbumsByTitle(title));
+	            }
+	            else {
+	            	System.out.println("Invalid choice. Try again.");
+		        	searchMusicStore();
+	            }
 	        case "2":
-	        	System.out.print("Enter Album to search: ");
-	            String album = scanner.nextLine();
-	            System.out.print(MusicStore.getAlbumsByTitle(album));
-	        	break;
-	        case "3":
 	        	System.out.print("Enter Artist to search: ");
 	            String artist = scanner.nextLine();
 	            System.out.print(MusicStore.getSongsByArtist(artist));
 	        	break;
-	        case "4":
+	        case "3":
 	        	System.out.print("Enter Genre to search: ");
 	            String genre = scanner.nextLine();
 	            System.out.print(MusicStore.getSongsByGenre(genre));
@@ -218,20 +230,28 @@ public class MusicApp {
 	private void removeSong() {
     	System.out.print("Enter title of song to remove: ");
         String title = scanner.nextLine();
-        currentUser.removeSongFromLibrary(title);
+        // TODO fix
+        currentUser.removeSongFromLibrary(title, "");
 	}
 
 	private void removeAlbum() {
 		System.out.print("Enter title of album to remove: ");
         String title = scanner.nextLine();
-        currentUser.removeAlbumFromLibrary(title);
+        // TODO fix
+        currentUser.removeAlbumFromLibrary(title, "");
 	}
 
 	private void viewLibrary() {
         System.out.println("Sort library by: 1. Title 2. Artist 3. Rating");
-        int sortChoice = scanner.nextInt();
-        scanner.nextLine();
-        currentUser.displayLibrary(sortChoice);
+        String sortChoice = scanner.nextLine();
+        int choice = Integer.parseInt(sortChoice);
+        if (choice >= 1 && choice<=3) {
+        	System.out.println(currentUser.displayLibrary(choice));
+        }
+        else { 
+        	System.out.println("Invalid choice. Try again");
+        	viewLibrary();
+        }
     }
 
     private void playSong() {
@@ -250,10 +270,6 @@ public class MusicApp {
 
     private void shuffleLibrary() {
     	currentUser.shuffleSongs();
-    }
-
-    private void viewPlaylists() {
-    	currentUser.displayPlaylists();
     }
 
     public static void main(String[] args) {

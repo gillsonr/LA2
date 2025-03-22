@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,8 +30,9 @@ public class UserDatabase {
 			// create a user an add it to the user map
 			User curUser = new User(accountInfo[0], accountInfo[1]);
 			
-			//TODO convert the salt (hex) into byte[]
 			byte[] salt = new byte[64];
+			
+			salt = hexToByte(accountInfo[2]);
 			
 			curUser.setSalt(salt);
 			
@@ -65,6 +68,14 @@ public class UserDatabase {
 		// add the user to the hashMap of users
 		users.put(username,newUser);
 		
+		// write the new user to User.txt
+		try(FileWriter fw = new FileWriter("User", true)){
+			//TODO check salt
+			fw.write(username+","+encodedPassword+","+salt);
+		} catch (IOException e) {
+			System.out.println("Error writing to file");
+		}
+		
 		return true;
 	}
 	
@@ -86,6 +97,19 @@ public class UserDatabase {
 		return null;
 	}
 	
+	// this method updates the UserDatabase with all of the new information
+	public void updateDatabase() {
+		try(FileWriter fw = new FileWriter("User", false)){
+			//write the information to the file
+			for (User user: users.values()) {
+				// TODO convert the user to a string
+				fw.write("");
+			}
+		} catch (IOException e) {
+			System.out.println("Error writing to file");
+		}
+	}
+	
 	// encodes the given string
 	public String encode(String password, byte[] salt) {
 		//
@@ -99,7 +123,7 @@ public class UserDatabase {
 			byte[] hash = sha256.digest();
 			//convert the hash into a string
 			for (byte b : hash) {
-				encodedPassword += String.format("%02X", b);
+				encodedPassword += String.format("%02x", b);
 			}
 			return encodedPassword;
 
@@ -107,6 +131,16 @@ public class UserDatabase {
 			System.out.println("Error with encode");
 			return null;
 		}
+	}
+	
+	// converts the hexadecimal values into bytes
+	public byte[] hexToByte(String hex) {
+		byte[] bytes = new byte[hex.length()/2];
+		for (int i = 0; i < bytes.length; i ++) {
+			bytes[i] = (byte)(Integer.parseInt(hex.substring(i * 2, i * 2 + 2), 16));
+		}
+		
+		return bytes;
 	}
 
 }

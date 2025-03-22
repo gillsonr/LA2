@@ -21,7 +21,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testAddValidSongToLibrary() throws FileNotFoundException {
+	void testAddValidSongToLibrary(){
 		LibraryModel library = new LibraryModel();
 		String str = "Green Eyes was added to Library";
 		String returnString = library.addSongToLibrary("Green Eyes", "Coldplay");
@@ -29,7 +29,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testAddNONValidSongToLibrary() throws FileNotFoundException {
+	void testAddNONValidSongToLibrary(){
 		LibraryModel library = new LibraryModel();
 		String returnString = library.addSongToLibrary("Green", "Coldplay");
 		String str = "Song could not be added; not found in MusicStore";
@@ -37,7 +37,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testAddDuplicateSongToLibrary() throws FileNotFoundException {
+	void testAddDuplicateSongToLibrary(){
 		LibraryModel library = new LibraryModel();
 		String str = "Song could not be added; already in Library";
 		
@@ -48,7 +48,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testNonValidAlbumToLibrary() throws FileNotFoundException {
+	void testNonValidAlbumToLibrary(){
 		LibraryModel library = new LibraryModel();
 		String str = "Song could not be added; already in Library";
 		
@@ -59,7 +59,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testAddAlbumToLibrary() throws FileNotFoundException {
+	void testAddAlbumToLibrary(){
 		LibraryModel library = new LibraryModel();
 		String returnStr = library.addAlbumToLibrary("19", "Adele");
 		String str = "19 successfully added\n";
@@ -73,8 +73,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testAllSongs() throws FileNotFoundException {
-		// TODO check the order specs for all songs
+	void testAllSongs(){
 		LibraryModel library = new LibraryModel();
 		
 		String str = "No songs in library\n";
@@ -83,15 +82,15 @@ class testLibraryModel {
 		library.addSongToLibrary("Tired", "Adele");
 		library.addSongToLibrary("Green Eyes", "Coldplay");
 		str = "Here is a list of all songs in your library\n" +
-				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n" +
-						"Tired by Adele from album: 19\n";
+				"Tired by Adele from album: 19\n" +
+				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
 						
 		String returnStr = library.allSongs();
 		assertEquals(returnStr,str);
 	}
 	
 	@Test
-	void testAllArtists() throws FileNotFoundException {
+	void testAllArtists(){
 		LibraryModel library = new LibraryModel();
 		library.addSongToLibrary("Tired", "Adele");
 		library.addSongToLibrary("Green Eyes", "Coldplay");
@@ -104,7 +103,7 @@ class testLibraryModel {
 	
 	
 	@Test
-	void testAllAlbums() throws FileNotFoundException {
+	void testAllAlbums(){
 		LibraryModel library = new LibraryModel();
 		library.addAlbumToLibrary("21", "Adele");
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
@@ -117,7 +116,7 @@ class testLibraryModel {
 	
 	
 	@Test
-	void testSongsByArtistFROMALBUM() throws FileNotFoundException {
+	void testSongsByArtistFROMALBUM(){
 		LibraryModel library = new LibraryModel();
 		String str = "No songs by Coldplay";
 		assertEquals(library.getSongsByArtist("Coldplay"),str);
@@ -140,7 +139,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testSongsByArtist() throws FileNotFoundException {
+	void testSongsByArtist(){
 		LibraryModel library = new LibraryModel();
 		String str = "No songs by Coldplay";
 		assertEquals(library.getSongsByArtist("Coldplay"),str);
@@ -151,7 +150,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testSongsByATitle() throws FileNotFoundException {
+	void testSongsByATitle(){
 		LibraryModel library = new LibraryModel();
 		String str = "No songs with title Green Eyes";
 		assertEquals(library.getSongsByTitle("Green Eyes"),str);
@@ -163,7 +162,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testGetAlbumsByTitle() throws FileNotFoundException {
+	void testGetAlbumsByTitle(){
 		LibraryModel library = new LibraryModel();
 		String str = "No albums with title A Rush of Blood to the Head";
 		assertEquals(library.getAlbumsByTitle("A Rush of Blood to the Head"),str);
@@ -187,7 +186,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testGetAlbumsByArtist() throws FileNotFoundException {
+	void testGetAlbumsByArtist(){
 		LibraryModel library = new LibraryModel();
 		String str = "No albums by Coldplay";
 		assertEquals(library.getAlbumsByArtist("Coldplay"),str);
@@ -209,12 +208,24 @@ class testLibraryModel {
 		String returnStr = library.getAlbumsByArtist("Coldplay");
 		assertEquals(str,returnStr);
 	}
+	
+	@Test 
+	void testCreatePlaylist() {
+		LibraryModel library = new LibraryModel();
+		String returnStr = library.createPlaylist("ALT");
+		String str = "Playlist 'ALT' was created successfully\n";
+		assertEquals(returnStr, str);
+		returnStr = library.createPlaylist("ALT");
+		str = "Playlist name is taken\n";
+		assertEquals(returnStr, str);
+	}
+	
 	@Test
-	void testGetPlaylistByName() throws FileNotFoundException {
+	void testGetPlaylistByName(){
 		LibraryModel library = new LibraryModel();
 		library.createPlaylist("ALT");
 		String returnStr = library.getPlaylistByName("ALT");
-		String str = "ALT\nThis playlist is empty\n";
+		String str = "ALT is empty\n";
 		assertEquals(returnStr, str);
 		
 		// test non existent playlist
@@ -223,24 +234,25 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testAddSongToPlaylist() throws FileNotFoundException {
+	void testAddSongToPlaylist() {
 		LibraryModel library = new LibraryModel();
 		library.createPlaylist("ALT");
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
 		library.addSongToPlaylist("ALT", "A Whisper", "Coldplay");
 		String returnStr = library.getPlaylistByName("ALT");
-		String str = "ALT\nA Whisper by Coldplay from album: A Rush of Blood to the Head\n";
+		String str = "Here is a list of songs in ALT\n"
+				+ "A Whisper by Coldplay from album: A Rush of Blood to the Head\n";
 		assertEquals(returnStr, str);
 	}
 	
 	@Test
-	void testAddAlbumToPlaylist() throws FileNotFoundException {
+	void testAddAlbumToPlaylist(){
 		LibraryModel library = new LibraryModel();
 		library.createPlaylist("ALT");
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
 		library.addAlbumToPlaylist("ALT", "A Rush of Blood to the Head", "Coldplay");
 		String returnStr = library.getPlaylistByName("ALT");
-		String str = "ALT\n"
+		String str = "Here is a list of songs in ALT\n"
 				+ "Politik by Coldplay from album: A Rush of Blood to the Head\n"
 				+ "In My Place by Coldplay from album: A Rush of Blood to the Head\n"
 				+ "God Put a Smile Upon Your Face by Coldplay from album: A Rush of Blood to the Head\n"
@@ -256,7 +268,7 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testRemoveSongFromPlaylist() throws FileNotFoundException {
+	void testRemoveSongFromPlaylist(){
 		LibraryModel library = new LibraryModel();
 		library.createPlaylist("ALT");
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
@@ -267,28 +279,184 @@ class testLibraryModel {
 	}
 	
 	@Test
-	void testAllPlaylists() throws FileNotFoundException {
+	void testAllPlaylists(){
 		LibraryModel library = new LibraryModel();
-		assertEquals("No playlists in library\n", library.allPlaylists());
+		assertEquals("Here is a list of all playlists in your library\n"
+				+ "Frequently Played\n"
+				+ "Recently Played\n"
+				+ "Favorites\n", library.allPlaylists());
 		library.createPlaylist("ALT");
 		library.createPlaylist("2025");
 		String returnStr = library.allPlaylists();
-		String str = "Here is a list of all playlists in your library\n" +
-					"ALT\n" +
-					"2025\n";
+		String str = "Here is a list of all playlists in your library\n"
+					+ "Frequently Played\n"
+					+ "Recently Played\n"
+					+ "2025\n" 
+					+ "ALT\n" 
+					+ "Favorites\n";
 		assertEquals(str, returnStr);
 	}
 	
 	@Test
-	void testFavoriteSongs() throws FileNotFoundException {
+	void testFavoriteSongs(){
 		LibraryModel library = new LibraryModel();
-		assertEquals(library.favoriteSongs(), "No favorites in library\n");
+		assertEquals(library.favoriteSongs(), "Favorites is empty\n");
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
 		library.rateSong("Green Eyes", "Coldplay", 5);
 		String returnStr = library.favoriteSongs();
-		String str = "Here is a list of all favorites in your library\n"+ 
+		String str = "Here is a list of songs in Favorites\n"+ 
 						"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
 		assertEquals(str, returnStr);
 	}
+	
+	@Test
+	void testSortedByTitle() {
+		LibraryModel library = new LibraryModel();
+		library.addSongToLibrary("Politik", "Coldplay");
+		library.addSongToLibrary("Green Eyes", "Coldplay");
+		String str = "Here is your library, sorted by title\n"
+				+ "Green Eyes by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "Politik by Coldplay from album: A Rush of Blood to the Head\n";
+		String returnStr = library.sortedByTitle();
+		assertEquals(returnStr, str);
+	}
 
+	@Test
+	void testSortedByArtist() {
+		LibraryModel library = new LibraryModel();
+		library.addSongToLibrary("Green Eyes", "Coldplay");
+		library.addSongToLibrary("Tired", "Adele");
+		String str = "Here is your library, sorted by artist\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
+		String returnStr = library.sortedByArtist();
+		assertEquals(returnStr, str);
+	}
+	
+	@Test
+	void testSortedByRating() {
+		LibraryModel library = new LibraryModel();
+		library.addSongToLibrary("Green Eyes", "Coldplay");
+		library.addSongToLibrary("Tired", "Adele");
+		library.rateSong("Green Eyes", "Coldplay", 1);
+		String str = "Here is your library, sorted by rating\n"
+				+ "Unrated songs\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "\nSongs rated 1\n"
+				+ "Green Eyes by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "\nSongs rated 2\n"
+				+ "\nSongs rated 3\n"
+				+ "\nSongs rated 4\n"
+				+ "\nSongs rated 5\n";
+		String returnStr = library.sortedByRating();
+		assertEquals(returnStr, str);
+	}
+	
+	@Test
+	void testRecentlyPlayed() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		assertEquals(library.displayRecentlyPlayed(), "Recently Played is empty\n");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Best for Last", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		assertEquals(library.displayRecentlyPlayed(), "Here is a list of songs in Recently Played\n"
+				+ "Daydreamer by Adele from album: 19\n"
+				+ "Best for Last by Adele from album: 19\n");
+		library.playSong("Chasing Pavements", "Adele");
+		library.playSong("Cold Shoulder", "Adele");
+		library.playSong("Crazy for You", "Adele");
+		library.playSong("First Love", "Adele");
+		library.playSong("Right as Rain", "Adele");
+		library.playSong("Hometown Glory", "Adele");
+		library.playSong("Tired", "Adele");
+		library.playSong("My Same", "Adele");
+		library.playSong("Make You Feel My Love", "Adele");
+		assertEquals(library.displayRecentlyPlayed(), "Here is a list of songs in Recently Played\n"
+				+ "Make You Feel My Love by Adele from album: 19\n"
+				+ "My Same by Adele from album: 19\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "Hometown Glory by Adele from album: 19\n"
+				+ "Right as Rain by Adele from album: 19\n"
+				+ "First Love by Adele from album: 19\n"
+				+ "Crazy for You by Adele from album: 19\n"
+				+ "Cold Shoulder by Adele from album: 19\n"
+				+ "Chasing Pavements by Adele from album: 19\n"
+				+ "Daydreamer by Adele from album: 19\n");
+	}
+	
+	@Test
+	void testFrequentlyPlayed() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		// test empty
+		assertEquals(library.displayRecentlyPlayed(), "Recently Played is empty\n");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Best for Last", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		library.playSong("Best for Last", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		// test playing a song multiple times and <10 songs
+		assertEquals(library.displayFrequentlyPlayed(), "Here is a list of songs in Frequently Played\n"
+				+ "Daydreamer by Adele from album: 19\n"
+				+ "Best for Last by Adele from album: 19\n");
+		library.playSong("Chasing Pavements", "Adele");
+		library.playSong("Cold Shoulder", "Adele");
+		library.playSong("Crazy for You", "Adele");
+		library.playSong("First Love", "Adele");
+		library.playSong("Right as Rain", "Adele");
+		library.playSong("Hometown Glory", "Adele");
+		library.playSong("Tired", "Adele");
+		library.playSong("My Same", "Adele");
+		library.playSong("Make You Feel My Love", "Adele");
+		library.playSong("Daydreamer", "Adele");
+		// test more then 10 songs + duplicate songs
+		assertEquals(library.displayFrequentlyPlayed(), "Here is a list of songs in Frequently Played\n"
+				+ "Daydreamer by Adele from album: 19\n"
+				+ "Best for Last by Adele from album: 19\n"
+				+ "Chasing Pavements by Adele from album: 19\n"
+				+ "Cold Shoulder by Adele from album: 19\n"
+				+ "Crazy for You by Adele from album: 19\n"
+				+ "First Love by Adele from album: 19\n"
+				+ "Right as Rain by Adele from album: 19\n"
+				+ "Hometown Glory by Adele from album: 19\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "Make You Feel My Love by Adele from album: 19\n");
+	}
+	
+	@Test 
+	void testRemoveSongFromLibrary() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		String returnStr = library.removeSongFromLibrary("Tired", "Adele");
+		String str = "Song Removed\n";
+		// tests removing song
+		assertEquals(returnStr,str);
+		// bc song was already removed, this tests removing a song not in library
+		returnStr = library.removeSongFromLibrary("Tired", "Adele");
+		str = "Song not found\n";
+		assertEquals(returnStr, str);
+	}
+	
+	@Test 
+	void testRemoveAlbumFromLibrary() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		String returnStr = library.removeAlbumFromLibrary("19", "Adele");
+		String str = "Album Removed\n";
+		// tests removing album
+		assertEquals(returnStr,str);
+		// bc album was already removed, this tests removing a album that is not in library
+		returnStr = library.removeSongFromLibrary("19", "Adele");
+		str = "Album not found\n";
+		assertEquals(returnStr, str);
+	}
+	
+	
 }
