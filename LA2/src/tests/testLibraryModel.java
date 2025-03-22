@@ -392,6 +392,7 @@ class testLibraryModel {
 	void testFrequentlyPlayed() {
 		LibraryModel library = new LibraryModel();
 		library.addAlbumToLibrary("19", "Adele");
+		// test empty
 		assertEquals(library.displayRecentlyPlayed(), "Recently Played is empty\n");
 		library.playSong("Daydreamer", "Adele");
 		library.playSong("Daydreamer", "Adele");
@@ -401,6 +402,7 @@ class testLibraryModel {
 		library.playSong("Daydreamer", "Adele");
 		library.playSong("Best for Last", "Adele");
 		library.playSong("Daydreamer", "Adele");
+		// test playing a song multiple times and <10 songs
 		assertEquals(library.displayFrequentlyPlayed(), "Here is a list of songs in Frequently Played\n"
 				+ "Daydreamer by Adele from album: 19\n"
 				+ "Best for Last by Adele from album: 19\n");
@@ -414,6 +416,7 @@ class testLibraryModel {
 		library.playSong("My Same", "Adele");
 		library.playSong("Make You Feel My Love", "Adele");
 		library.playSong("Daydreamer", "Adele");
+		// test more then 10 songs + duplicate songs
 		assertEquals(library.displayFrequentlyPlayed(), "Here is a list of songs in Frequently Played\n"
 				+ "Daydreamer by Adele from album: 19\n"
 				+ "Best for Last by Adele from album: 19\n"
@@ -426,4 +429,34 @@ class testLibraryModel {
 				+ "Tired by Adele from album: 19\n"
 				+ "Make You Feel My Love by Adele from album: 19\n");
 	}
+	
+	@Test 
+	void testRemoveSongFromLibrary() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		String returnStr = library.removeSongFromLibrary("Tired", "Adele");
+		String str = "Song Removed\n";
+		// tests removing song
+		assertEquals(returnStr,str);
+		// bc song was already removed, this tests removing a song not in library
+		returnStr = library.removeSongFromLibrary("Tired", "Adele");
+		str = "Song not found\n";
+		assertEquals(returnStr, str);
+	}
+	
+	@Test 
+	void testRemoveAlbumFromLibrary() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		String returnStr = library.removeAlbumFromLibrary("19", "Adele");
+		String str = "Album Removed\n";
+		// tests removing album
+		assertEquals(returnStr,str);
+		// bc album was already removed, this tests removing a album that is not in library
+		returnStr = library.removeSongFromLibrary("19", "Adele");
+		str = "Album not found\n";
+		assertEquals(returnStr, str);
+	}
+	
+	
 }
