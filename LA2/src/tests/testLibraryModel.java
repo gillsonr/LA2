@@ -453,7 +453,7 @@ class testLibraryModel {
 		// tests removing album
 		assertEquals(returnStr,str);
 		// bc album was already removed, this tests removing a album that is not in library
-		returnStr = library.removeSongFromLibrary("19", "Adele");
+		returnStr = library.removeAlbumFromLibrary("19", "Adele");
 		str = "Album not found\n";
 		assertEquals(returnStr, str);
 	}
