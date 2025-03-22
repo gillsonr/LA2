@@ -446,16 +446,17 @@ public class LibraryModel {
 				for (Song a: songs.get(title)) {
 					if (a.getArtist().equals(artist)) {
 						songs.get(title).remove(a);
-						return "Song Removed";
+						return "Song Removed\n";
 					}
 				}
 			}
-		} return "Song not found";
+		} return "Song not found\n";
 		
 	}
 	
 	public String removeAlbumFromLibrary(String album, String artist) {
 		boolean found = false;
+		// TODO fix, masterSongList is changed while using another method that uses it, not allowed
 		for (Song s: masterSongList) {
 			if (s.getAlbum().equals(album) && s.getArtist().equals(artist)) {
 				removeSongFromLibrary(s.getTitle(), artist);
@@ -463,8 +464,16 @@ public class LibraryModel {
 			}
 		}
 		if (found) {
+			// if the album is found, remove it from list of albums
+			for(Album a: albums) {
+				if (a.getArtist().equals(artist) && a.getTitle().equals(album)) {
+					albums.remove(a);
+					break;
+				}
+			}
 			return "Album removed";
-		}  return "Album not found"; 
+		} 
+		return "Album not found"; 
 	}
 
 }
