@@ -33,7 +33,6 @@ public final class MusicStore {
 			}
 		scanner.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -66,7 +65,6 @@ public final class MusicStore {
 			
 			scanner.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -118,7 +118,7 @@ public class MusicApp {
                     shuffleLibrary();
                     break;
                 case "8":
-                	System.out.print(currentUser.displayPlaylists());;
+                	System.out.print(currentUser.displayPlaylists());
                     break;
                 case "9":
                     removeSong();
@@ -127,7 +127,7 @@ public class MusicApp {
                     removeAlbum();
                     return;
                 case "11":
-                    System.out.println("Logging out...");
+                    System.out.println("\nLogging out...\n");
                     return;
                 default:
                     System.out.println("Invalid choice. Try again.");
@@ -149,18 +149,20 @@ public class MusicApp {
     	String searchType = scanner.nextLine();
         switch(searchType) {
 	        case "1":
-	        	System.out.print("Enter Song Title to search: ");
+	        	System.out.print("Enter title to search: ");
 	            String title = scanner.nextLine();
 	            // searching for songs
 	            if(songOrAlbum.equals("1")) {
 	            	System.out.print(MusicStore.getSongsByTitle(title));
+	            	// TODO don't need to view album details from music store
 		            System.out.print("Would you like to view album details? (yes/no): ");
 		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
 		                MusicStore.displayAlbumInfo(title);
 		            }
+		            // TODO we don't have the ability to do this just from title
 		            System.out.print("Would you like to add song to library? (yes/no): ");
 		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
-		                currentUser.addSongToLibrary(title);
+		                //currentUser.addSongToLibrary(title);
 		            }
 		        	break;
 	            }
@@ -171,6 +173,7 @@ public class MusicApp {
 	            	System.out.println("Invalid choice. Try again.");
 		        	searchMusicStore();
 	            }
+	        // TODO fix logic, doesnt differenciate between searching for album and song
 	        case "2":
 	        	System.out.print("Enter Artist to search: ");
 	            String artist = scanner.nextLine();
@@ -195,7 +198,9 @@ public class MusicApp {
     	System.out.println();
         switch(searchType) {
 	        case "1":
-	        	searchSong();
+	        	System.out.print("Enter title of Song to search: ");
+	            String song = scanner.nextLine();
+	            System.out.print(currentUser.searchSong(song));
 	        	break;
 	        case "2":
 	        	System.out.print("Enter title of Album to search: ");
@@ -242,7 +247,7 @@ public class MusicApp {
 	}
 
 	private void viewLibrary() {
-        System.out.println("Sort library by: 1. Title 2. Artist 3. Rating");
+        System.out.print("Sort library by: 1. Title 2. Artist 3. Rating\nEnter choice: ");
         String sortChoice = scanner.nextLine();
         int choice = Integer.parseInt(sortChoice);
         if (choice >= 1 && choice<=3) {
@@ -257,18 +262,21 @@ public class MusicApp {
     private void playSong() {
         System.out.print("Enter song title to play: ");
         String title = scanner.nextLine();
-        //currentUser.playSong(title);
+        System.out.print("Enter artist name: ");
+        String artist = scanner.nextLine();
+        System.out.print(currentUser.playSong(title, artist));
     }
 
     private void viewRecentlyPlayed() {
-    	currentUser.displayRecentlyPlayed();
+    	System.out.print("\n" + currentUser.displayRecentlyPlayed());
     }
 
     private void viewFrequentlyPlayed() {
-    	currentUser.displayFrequentlyPlayed();
+    	System.out.print("\n" + currentUser.displayFrequentlyPlayed());
     }
 
     private void shuffleLibrary() {
+    	System.out.println("\nSongs have been shuffled\n");
     	currentUser.shuffleSongs();
     }
 

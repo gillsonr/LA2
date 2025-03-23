@@ -354,6 +354,10 @@ public class LibraryModel {
 		return str;
 	}
 	public String sortedByRating() {
+		if (masterSongList.size() == 0) {
+			return "No songs are in library\n";
+		}
+		
 		// 6 rowed 2D array list, rows correspond with rating
 		ArrayList<ArrayList<Song>> ratings = new ArrayList<ArrayList<Song>>();
 		ratings.add(new ArrayList<Song>());

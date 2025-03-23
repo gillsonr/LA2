@@ -95,26 +95,28 @@ public class User {
 		
 	}
 
-	public void searchAlbum(String title) {
-		//TODO 
-		
+	public String searchAlbum(String title) {
+		return library.getAlbumsByTitle(title);
 	}
 
-	public void searchArtist(String artist) {
-		// TODO Auto-generated method stub
-		
+	public String searchArtist(String artist) {
+		return library.getAlbumsByArtist(artist);
 	}
 
-	public void searchGenre(String genre) {
-		// TODO Auto-generated method stub
-		
+	// TODO this wont work rn
+	public String searchGenre(String genre) {
+		return library.getPlaylistByName(genre);
 	}
 
-	public void addSongToLibrary(String title) {
-		// TODO Auto-generated method stub
-		
+	public String addSongToLibrary(String title, String artist) {
+		return library.addSongToLibrary(title, artist);
 	}
 	
+	public String searchSong(String title) {
+		return library.getSongsByTitle(title);
+	}
+
+	// TODO fill
 	public String toString() {
 		return "";
 	}
