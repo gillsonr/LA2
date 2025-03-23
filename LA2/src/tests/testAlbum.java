@@ -22,6 +22,10 @@ class testAlbum {
 		
 		String str = "The Sticks by Mother Mother, 2017, alt\nSongs:\nBit by Bit\n";
 		assertEquals(str, sticks.toString());
+		
+		
+		Song s = new Song("Hello", "Adele", "19");
+		sticks.addSong(s);
 	}
 	
 	@Test

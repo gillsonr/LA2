@@ -56,6 +56,7 @@ public final class MusicStore {
 			while(scanner.hasNext()) {
 				// adds new song from line
 				Song s = new Song(scanner.nextLine(), artistName, albumTitle);
+				s.setGenre(genre.toUpperCase());
 				songs.add(s);
 				songList.add(s);
 			}

@@ -61,18 +61,18 @@ public class User {
 		return null;
 	}
 
-	public void playSong(String title) {
-		// TODO Auto-generated method stub
+	public String playSong(String title, String artist) {
+		return library.playSong(title, artist);
 		
 	}
 
-	public void displayRecentlyPlayed() {
-		// TODO Auto-generated method stub
+	public String displayRecentlyPlayed() {
+		return library.displayRecentlyPlayed();
 		
 	}
 
-	public void displayFrequentlyPlayed() {
-		// TODO Auto-generated method stub
+	public String displayFrequentlyPlayed() {
+		return library.displayFrequentlyPlayed();
 		
 	}
 
@@ -85,18 +85,18 @@ public class User {
 		
 	}
 
-	public void removeAlbumFromLibrary(String title, String artist) {
-		// TODO Auto-generated method stub
+	public String removeAlbumFromLibrary(String title, String artist) {
+		return library.removeAlbumFromLibrary(title, artist);
 		
 	}
 
-	public void removeSongFromLibrary(String title, String artist) {
-		// TODO Auto-generated method stub
+	public String removeSongFromLibrary(String title, String artist) {
+		return library.removeSongFromLibrary(title, artist);
 		
 	}
 
 	public void searchAlbum(String title) {
-		// TODO Auto-generated method stub
+		//TODO 
 		
 	}
 
@@ -113,6 +113,10 @@ public class User {
 	public void addSongToLibrary(String title) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String toString() {
+		return "";
 	}
 
 

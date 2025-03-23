@@ -7,12 +7,6 @@ import java.util.HashMap;
 // the LibraryModel class stores user information about what they have saved from the music store
 public class LibraryModel {
 	
-	/* TODO maybe we change these to hashmaps, ex <title, arrayList of songs>
-	 * <album title, ArrayList<album>
-	 * <playlist title, playlist> (we dont allow duplicate playlistNames)
-	 * 
-	 */
-	
 	// <title, songs with that title>
 	private HashMap<String,ArrayList<Song>> songs = new HashMap<String,ArrayList<Song>>();
 	// <artist, songs by artist>
@@ -27,10 +21,21 @@ public class LibraryModel {
 	public LibraryModel(){
 		masterSongList = new ArrayList<Song>();
 		collection.put("Favorites", new Playlist("Favorites"));
-		// TODO should this be different then a playlist to make the max 10
 		collection.put("Recently Played", new Playlist("Recently Played"));
 		collection.put("Frequently Played", new Playlist("Frequently Played"));
+		collection.put("Top Rated", new Playlist("Top Rated"));
+		// playlists only appear when they have more than 10 songs
+		collection.put("ROCK GENRE", new Playlist("ROCK GENRE"));
+		collection.put("COUNTRY GENRE", new Playlist("COUNTRY GENRE"));
+		collection.put("TRADITIONAL COUNTRY GENRE", new Playlist("TRADITIONAL COUNTRY GENRE"));
+		collection.put("CLASSICAL GENRE", new Playlist("CLASSICAL GENRE"));
+		collection.put("ROCK GENRE", new Playlist("ROCK GENRE"));
+		collection.put("POP GENRE", new Playlist("POP GENRE"));
+		collection.put("ALTERNATIVE GENRE", new Playlist("ALTERNATIVE GENRE"));
+		collection.put("LATIN GENRE", new Playlist("LATIN GENRE"));
+		collection.put("SINGER/SONGWRITE GENRE", new Playlist("SINGER/SONGWRITER GENRE"));
 	}
+	
 	// finds song from songName and artistName in music store and creates copy
 	// if song doesn't exist, song = null
 	public Song createSong(String songName, String artistName) {
@@ -63,6 +68,10 @@ public class LibraryModel {
 			artists.put(s.getArtist(), new ArrayList<Song>());
 		}
 		
+		if (collection.containsKey(s.getGenre())) {
+			collection.get(s.getGenre() + "GENRE").addSong(s);
+		}
+
 		songs.get(s.getTitle()).add(s);
 		artists.get(s.getArtist()).add(s);
 		masterSongList.add(s);
@@ -270,10 +279,10 @@ public class LibraryModel {
 		String str = "";
 		//search through all of the songs in library
 		for (Playlist p: collection.values()) {
-			str += p.getName() + "\n";
-		}
-		if (str.equals("")) {
-			return "No playlists in library\n";
+			// if the playlist is not a genre playlist or has more then 10 chars print
+			if (p.getSize() >= 10 || !p.getName().contains("GENRE")) {
+				str += p.getName() + "\n";
+			}
 		}
 		return "Here is a list of all playlists in your library\n" + str;
 	}
@@ -283,6 +292,10 @@ public class LibraryModel {
 		
 	}
 	
+	public String topRated() {
+		return collection.get("Top Rated").getSongs();
+	}
+	
 	public String rateSong(String title, String artist, int rating) {
 		// find the song
 		for (Song s: songs.get(title)) {
@@ -290,8 +303,10 @@ public class LibraryModel {
 				//rate the song and tell the user it has been rated
 				s.setRating(rating);
 				//add the song to the list of favorites
-				// TODO test that this still works with rating == 4
 				if (rating == 5 || rating == 4) {
+					collection.get("Top Rated").addSong(s);
+				}
+				if (rating == 5) {
 					collection.get("Favorites").addSong(s);
 				}
 				return title + "has been rated\n";

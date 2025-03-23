@@ -1,8 +1,6 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.io.FileNotFoundException;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -283,6 +281,7 @@ class testLibraryModel {
 		LibraryModel library = new LibraryModel();
 		assertEquals("Here is a list of all playlists in your library\n"
 				+ "Frequently Played\n"
+				+ "Top Rated\n"
 				+ "Recently Played\n"
 				+ "Favorites\n", library.allPlaylists());
 		library.createPlaylist("ALT");
@@ -290,11 +289,38 @@ class testLibraryModel {
 		String returnStr = library.allPlaylists();
 		String str = "Here is a list of all playlists in your library\n"
 					+ "Frequently Played\n"
+					+ "Top Rated\n"
 					+ "Recently Played\n"
-					+ "2025\n" 
 					+ "ALT\n" 
+					+ "2025\n" 
 					+ "Favorites\n";
 		assertEquals(str, returnStr);
+	}
+	
+	@Test
+	void testGenrePlaylists() {
+		LibraryModel library = new LibraryModel();
+		assertEquals("Here is a list of all playlists in your library\n"
+				+ "Frequently Played\n"
+				+ "Top Rated\n"
+				+ "Recently Played\n"
+				+ "Favorites\n", library.allPlaylists());
+		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
+		assertEquals("Here is a list of all playlists in your library\n"
+				+ "Frequently Played\n"
+				+ "Alternative\n"
+				+ "Top Rated\n"
+				+ "Recently Played\n"
+				+ "Favorites\n", library.allPlaylists());
+		library.addAlbumToLibrary("19", "Adele");
+		assertEquals("Here is a list of all playlists in your library\n"
+				+ "Frequently Played\n"
+				+ "Alternative\n"
+				+ "Top Rated\n"
+				+ "Recently Played\n"
+				+ "Pop\n"
+				+ "Favorites\n", library.allPlaylists());
+		
 	}
 	
 	@Test
@@ -307,11 +333,35 @@ class testLibraryModel {
 		String str = "Here is a list of songs in Favorites\n"+ 
 						"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
 		assertEquals(str, returnStr);
+		library.addSongToLibrary("Tired", "Adele");
+		library.rateSong("Tired", "Adele", 4);
+		returnStr = library.favoriteSongs();
+		str = "Here is a list of songs in Favorites\n"+ 
+				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
+	}
+	
+	@Test
+	void testTopRated() {
+		LibraryModel library = new LibraryModel();
+		assertEquals(library.topRated(), "Top Rated is empty\n");
+		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
+		library.rateSong("Green Eyes", "Coldplay", 5);
+		String returnStr = library.topRated();
+		String str = "Here is a list of songs in Top Rated\n"+ 
+						"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
+		assertEquals(str, returnStr);
+		library.addSongToLibrary("Tired", "Adele");
+		library.rateSong("Tired", "Adele", 4);
+		returnStr = library.topRated();
+		str = "Here is a list of songs in Top Rated\n"+ 
+				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n" + 
+				"Tired by Adele from album: 19\n";
 	}
 	
 	@Test
 	void testSortedByTitle() {
 		LibraryModel library = new LibraryModel();
+		assertEquals(library.sortedByTitle(), "No songs are in library\n");
 		library.addSongToLibrary("Politik", "Coldplay");
 		library.addSongToLibrary("Green Eyes", "Coldplay");
 		String str = "Here is your library, sorted by title\n"
@@ -324,6 +374,7 @@ class testLibraryModel {
 	@Test
 	void testSortedByArtist() {
 		LibraryModel library = new LibraryModel();
+		assertEquals(library.sortedByArtist(), "No songs are in library\n");
 		library.addSongToLibrary("Green Eyes", "Coldplay");
 		library.addSongToLibrary("Tired", "Adele");
 		String str = "Here is your library, sorted by artist\n"
@@ -457,6 +508,16 @@ class testLibraryModel {
 		str = "Album not found\n";
 		assertEquals(returnStr, str);
 	}
+	
+	@Test
+	void testPlaySong() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		assertEquals(library.playSong("Daydreamer", "Adele"), "Now playing Daydreamer by Adele\n");
+		assertEquals(library.playSong("Daydeemer", "Adeel"), "Song is not in library\n");
+	}
+	
+
 	
 	
 }

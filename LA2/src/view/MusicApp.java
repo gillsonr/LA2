@@ -1,4 +1,4 @@
-package view;
+package view; 
 
 import java.util.*;
 import model.MusicStore;
@@ -257,7 +257,7 @@ public class MusicApp {
     private void playSong() {
         System.out.print("Enter song title to play: ");
         String title = scanner.nextLine();
-        currentUser.playSong(title);
+        //currentUser.playSong(title);
     }
 
     private void viewRecentlyPlayed() {

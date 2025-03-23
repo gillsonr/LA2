@@ -100,6 +100,12 @@ class testSong {
 			Song s = new Song("LIVIDI SUI GOMITI", "Maneskin", "RUSH!");
 			assertEquals(null,s.getRating());
 		}
-	
+		
+	@Test
+	void testGetGenre() {
+		Song s = new Song("Tired", "Adele", "19");
+		s.setGenre("pop");
+		assertEquals(s.getGenre(), "pop");
+	}
 
 }

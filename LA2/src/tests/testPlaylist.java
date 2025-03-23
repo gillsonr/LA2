@@ -34,7 +34,7 @@ class testPlaylist {
 		playlist.addSong(s);
 		String str = playlist.removeSong("Big Sur", "Jack Johnson");
 		
-		assertEquals(str, "Big Sur was removed\n");
+		assertEquals(str, "Big Sur has been removed from: test\n");
 	}
 	
 	@Test
