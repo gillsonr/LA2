@@ -7,7 +7,7 @@ public class Song {
 	private Rating rating;
 	private String album;
 	private int timesPlayed = 0;
-	private String gengre;
+	private String genre;
 	
 	
 	// Constructor
@@ -18,12 +18,13 @@ public class Song {
 		this.album = album;
 	}
 	
-	public Song (String title, String artist, String album, int timesPlayed) {
+	public Song (String title, String artist, String album, int timesPlayed, String genre) {
 		this.title = title;
 		this.artist = artist;
 		this.rating = null;
 		this.album = album;
 		this.timesPlayed = timesPlayed;
+		this.genre = genre;
 	}
 	/* we don't want setters because a song's variables 
 	   don't change (other then rating) */
@@ -61,7 +62,7 @@ public class Song {
 	}
 	
 	public Song createCopy() {
-		return new Song(this.title, this.artist, this.album, this.timesPlayed);
+		return new Song(this.title, this.artist, this.album, this.timesPlayed, this.genre);
 	}
 	
 	public String toString() {
@@ -76,5 +77,13 @@ public class Song {
 			return true;
 		}
 		return false;
+	}
+	
+	public void setGenre(String gen) {
+		this.genre = gen;
+	}
+
+	public String getGenre() {
+		return genre;
 	}
 }

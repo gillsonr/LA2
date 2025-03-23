@@ -61,18 +61,18 @@ public class User {
 		return null;
 	}
 
-	public void playSong(String title) {
-		// TODO Auto-generated method stub
+	public String playSong(String title, String artist) {
+		return library.playSong(title, artist);
 		
 	}
 
-	public void displayRecentlyPlayed() {
-		// TODO Auto-generated method stub
+	public String displayRecentlyPlayed() {
+		return library.displayRecentlyPlayed();
 		
 	}
 
-	public void displayFrequentlyPlayed() {
-		// TODO Auto-generated method stub
+	public String displayFrequentlyPlayed() {
+		return library.displayFrequentlyPlayed();
 		
 	}
 
@@ -85,34 +85,40 @@ public class User {
 		
 	}
 
-	public void removeAlbumFromLibrary(String title, String artist) {
-		// TODO Auto-generated method stub
+	public String removeAlbumFromLibrary(String title, String artist) {
+		return library.removeAlbumFromLibrary(title, artist);
 		
 	}
 
-	public void removeSongFromLibrary(String title, String artist) {
-		// TODO Auto-generated method stub
+	public String removeSongFromLibrary(String title, String artist) {
+		return library.removeSongFromLibrary(title, artist);
 		
 	}
 
-	public void searchAlbum(String title) {
-		// TODO Auto-generated method stub
-		
+	public String searchAlbum(String title) {
+		return library.getAlbumsByTitle(title);
 	}
 
-	public void searchArtist(String artist) {
-		// TODO Auto-generated method stub
-		
+	public String searchArtist(String artist) {
+		return library.getAlbumsByArtist(artist);
 	}
 
-	public void searchGenre(String genre) {
-		// TODO Auto-generated method stub
-		
+	// TODO this wont work rn
+	public String searchGenre(String genre) {
+		return library.getPlaylistByName(genre);
 	}
 
-	public void addSongToLibrary(String title) {
-		// TODO Auto-generated method stub
-		
+	public String addSongToLibrary(String title, String artist) {
+		return library.addSongToLibrary(title, artist);
+	}
+	
+	public String searchSong(String title) {
+		return library.getSongsByTitle(title);
+	}
+
+	// TODO fill
+	public String toString() {
+		return "";
 	}
 
 

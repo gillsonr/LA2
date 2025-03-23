@@ -33,7 +33,6 @@ public final class MusicStore {
 			}
 		scanner.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -56,6 +55,7 @@ public final class MusicStore {
 			while(scanner.hasNext()) {
 				// adds new song from line
 				Song s = new Song(scanner.nextLine(), artistName, albumTitle);
+				s.setGenre(genre.toUpperCase());
 				songs.add(s);
 				songList.add(s);
 			}
@@ -65,7 +65,6 @@ public final class MusicStore {
 			
 			scanner.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
