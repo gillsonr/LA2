@@ -19,6 +19,7 @@ public class LibraryModel {
 	private ArrayList<Song> masterSongList;
 
 	public LibraryModel(){
+		// TODO dont think we should hardcode genres, what if a new genre is added to the albums text file
 		masterSongList = new ArrayList<Song>();
 		collection.put("Favorites", new Playlist("Favorites"));
 		collection.put("Recently Played", new Playlist("Recently Played"));
@@ -186,13 +187,15 @@ public class LibraryModel {
 		// if the playlist exists
 		if (collection.containsKey(playlistName)) {
 			// search for song
-			for (Song s: songs.get(songTitle)) {
-				// if song is found
-				if (s.getArtist().equals(artist)) {
-					return collection.get(playlistName).addSong(s);
+			if(songs.containsKey(songTitle)) {
+				for (Song s: songs.get(songTitle)) {
+					// if song is found
+					if (s.getArtist().equals(artist)) {
+						return collection.get(playlistName).addSong(s);
+					}
 				}
 			}
-			return "Song is not in library";
+			return "Song is not in library\n";
 		}
 		// if the playlist does not exist
 		return playlistName + " has not been created\n"; 
@@ -201,21 +204,17 @@ public class LibraryModel {
 	public String addAlbumToPlaylist(String playlistName, String albumTitle, String artist) {
 		// if the playlist exists
 		if (collection.containsKey(playlistName)) {
-			Album album = MusicStore.getAlbumByTitleAndArtist(albumTitle, artist);
-			if (album == null) {return "Album was not found in music store";}
 			//check if album is in album list
-			boolean foundAlbum = false;
 			for (Album a: albums) {
 				if (a.getArtist().equals(artist) && a.getTitle().equals(albumTitle)) {
-					foundAlbum = true;
+					for (Song s: a.getSongs()) {
+						collection.get(playlistName).addSong(s);
+					}
+					return albumTitle + " has been added to playlist" + playlistName + "\n";
 				}
 			}
-			if (foundAlbum == false) {return "Album not in library";}
-			// TODO escaping references
-			for (Song s: album.getSongs()) {
-				collection.get(playlistName).addSong(s);
-			}
-			return albumTitle + " has been added to playlist" + playlistName + "\n";
+			return "Album not in library\n";
+			
 		}
 		// if the playlist does not exist
 		return playlistName + " has not been created\n"; 
@@ -297,6 +296,10 @@ public class LibraryModel {
 	}
 	
 	public String rateSong(String title, String artist, int rating) {
+		if (!songs.containsKey(title)) {
+			// if the song was not found
+			return "Song was not found\n";
+		}
 		// find the song
 		for (Song s: songs.get(title)) {
 			if (s.getArtist().equals(artist)) {
@@ -314,8 +317,9 @@ public class LibraryModel {
 		}
 		
 		// if the song was not found dont rate it
-		return "Song was not found";
+		return "Song was not found\n";
 	}
+	
 	public void shuffleSongs() {
 		Collections.shuffle(masterSongList);
 	}
@@ -397,19 +401,17 @@ public class LibraryModel {
 		if(!songs.containsKey(title)) {
 			return "Song is not in library\n";
 		}
-
-		Song song = new Song("temp","temp","temp");
 		for (Song s : songs.get(title)){
 			if (s.getArtist().equals(artist)) {
-				song = s;
-				break;
+				// inserts song to Recently Played playlist
+				collection.get("Recently Played").insertSong(s);
+				freqPlayed(s);
+				
+				return s.playSong();
 			}
 		}
-		// inserts song to Recently Played playlist
-		collection.get("Recently Played").insertSong(song);
-		freqPlayed(song);
+		return "Song is not in library\n";
 		
-		return song.playSong();
 	}
 	
 	// adds song to freqPlayed if applicable 

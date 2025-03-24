@@ -167,9 +167,4 @@ public final class MusicStore {
 		}
 		return str;
 	}
-
-	public static void displayAlbumInfo(String title) {
-		// TODO Auto-generated method stub
-		
-	}
 }

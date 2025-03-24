@@ -514,7 +514,7 @@ class testLibraryModel {
 		LibraryModel library = new LibraryModel();
 		library.addAlbumToLibrary("19", "Adele");
 		assertEquals(library.playSong("Daydreamer", "Adele"), "Now playing Daydreamer by Adele\n");
-		assertEquals(library.playSong("Daydeemer", "Adeel"), "Song is not in library\n");
+		assertEquals(library.playSong("sdfgh", "Adeel"), "Song is not in library\n");
 	}
 	
 
