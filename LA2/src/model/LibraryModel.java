@@ -88,7 +88,11 @@ public class LibraryModel {
 		Album a = MusicStore.getAlbumByTitleAndArtist(albumName, artist);
 		albums.add(a);
 		// TODO test add song to genre playlists
-		collection.put(a.getGenre(), new Playlist(a.getGenre()));
+		
+		// if genre isn't in collection, add it
+		if (!collection.containsKey(a.getGenre() + " GENRE")) {
+			collection.put(a.getGenre(), new Playlist(a.getGenre()));
+		}
 		for(Song s: a.getSongs()) {
 			addSong(s);
 			collection.get(a.getGenre()).addSong(s);
@@ -518,6 +522,13 @@ public class LibraryModel {
 			return "Album Removed\n";
 		} 
 		return "Album not found\n"; 
+	}
+	
+	public String searchByGenre(String genre) {
+		if (collection.containsKey(genre + " GENRE")){
+			return collection.get(genre+" GENRE").getSongs();
+		}
+		return "Genre not found";
 	}
 
 }
