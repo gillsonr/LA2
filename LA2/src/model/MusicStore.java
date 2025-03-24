@@ -150,7 +150,8 @@ public final class MusicStore {
 		}
 		return str;
 	}
-	
+	// TODO dont think we need this 
+	/*
 	public static String getSongsByGenre(String genre) {
 		ArrayList<Album> albums = new ArrayList<Album>();
 		for (Album a: albumList) {
@@ -167,4 +168,5 @@ public final class MusicStore {
 		}
 		return str;
 	}
+	*/
 }
