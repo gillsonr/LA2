@@ -253,9 +253,6 @@ public class MusicApp {
 		System.out.print("\n" + currentUser.viewAlbums());
 	}
 
-	// TODO add the ability to add to library after searching
-    // prob just ask "do you want to add song to library" after searching
-    // default to add first song (not sure how to go about adding other songs)
     private void searchMusicStore() {
     	System.out.println("Search for 1. song(s) or 2. album(s) in MusicStore?");
     	System.out.print("Enter choice: ");
@@ -363,7 +360,7 @@ public class MusicApp {
 
 	private void searchAlbumsLibrary() {
 		System.out.println("Search for album(s) in library by: "
-    			+ "1. Title 2. Artist");
+    					+ "1. Title 2. Artist");
     	System.out.print("Enter choice: ");
     	String searchType = scanner.nextLine();
     	System.out.println();
@@ -382,15 +379,6 @@ public class MusicApp {
 	        	System.out.println("Invalid choice. Try again.");
 	        	searchLibrary();
 	        	break;
-        }
-		
-	}
-
-	private void searchSong() {
-		// TODO Auto-generated method stub
-		System.out.print("Would you like to view album details? (yes/no): ");
-        if (scanner.nextLine().equalsIgnoreCase("yes")) {
-            //library.displayAlbumInfo(title);
         }
 	}
 

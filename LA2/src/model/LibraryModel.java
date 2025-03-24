@@ -25,15 +25,6 @@ public class LibraryModel {
 		collection.put("Frequently Played", new Playlist("Frequently Played"));
 		collection.put("Top Rated", new Playlist("Top Rated"));
 	}
-	
-	// finds song from songName and artistName in music store and creates copy
-	// if song doesn't exist, song = null
-	public Song createSong(String songName, String artistName) {
-		if (songName == null || artistName == null || songName.isEmpty() || artistName.isEmpty()) {
-			return null;
-		}
-		return MusicStore.getSongByTitleArtist(songName, artistName);
-	}
 
 	// searches through songs to see if a song is already in library
 	public boolean duplicate(Song s) {
@@ -95,10 +86,10 @@ public class LibraryModel {
 	public String addSongToLibrary(String songName, String artist) {
 		Song s = MusicStore.getSongByTitleArtist(songName, artist);
 		if (s == null) {
-			return "Song could not be added; not found in MusicStore";
+			return "Song could not be added; not found in MusicStore\n";
 		}
 		if (duplicate(s)) {
-			return "Song could not be added; already in Library";
+			return "Song could not be added; already in Library\n";
 		}
 		/* TODO this is what I was workign on for adding album when adding song
 		for (Album a: albums) {
@@ -111,7 +102,7 @@ public class LibraryModel {
 		// if album was not found, add album to library with only this song
 		*/
 		addSong(s);
-		return songName + " was added to Library";
+		return songName + " was added to Library\n";
 	}
 
 	// this method gets all of the songs in the library by artist

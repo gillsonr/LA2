@@ -150,23 +150,4 @@ public final class MusicStore {
 		}
 		return str;
 	}
-	// TODO dont think we need this 
-	/*
-	public static String getSongsByGenre(String genre) {
-		ArrayList<Album> albums = new ArrayList<Album>();
-		for (Album a: albumList) {
-			if (a.getGenre().equalsIgnoreCase(genre)) {
-				albums.add(a);
-			}
-		}
-		String str = "";
-		for(Album a: albums) {
-			str += a.toString(); 
-		}
-		if(str == "") {
-			return "No songs found\n";
-		}
-		return str;
-	}
-	*/
 }

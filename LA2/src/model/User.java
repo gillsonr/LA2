@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 public class User {
 	private String userName;
 	private String password;
@@ -36,7 +34,6 @@ public class User {
 
 	//@pre must be int 1,2,or3
 	public String displayLibrary(int sortChoice) {
-		// TODO Auto-generated method stub
 		switch (sortChoice) {
 			case 1:
 				return library.sortedByTitle();
@@ -94,9 +91,8 @@ public class User {
 		return library.getAlbumsByArtist(artist);
 	}
 
-	// TODO this wont work rn
 	public String searchGenre(String genre) {
-		return library.getPlaylistByName(genre);
+		return library.searchByGenre(genre);
 	}
 
 	public String addSongToLibrary(String title, String artist) {
@@ -139,14 +135,4 @@ public class User {
 	public String addAlbumToPlaylist(String playlistName, String title, String artist) {
 		return library.addAlbumToPlaylist(playlistName, title, artist);
 	}
-	
-	// TODO fill
-	public String toString() {
-		return "";
-	}
-
-	
-
-
-	
 }

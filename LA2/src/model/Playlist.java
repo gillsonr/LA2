@@ -86,7 +86,6 @@ public class Playlist {
 	// add the song at the given index
 	public void insertSong(Song song, int index) {
 		songs.add(index, song);
-		
 	}
 
 	public void removeLastSong() {

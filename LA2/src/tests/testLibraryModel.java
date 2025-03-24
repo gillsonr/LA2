@@ -21,7 +21,7 @@ class testLibraryModel {
 	@Test
 	void testAddValidSongToLibrary(){
 		LibraryModel library = new LibraryModel();
-		String str = "Green Eyes was added to Library";
+		String str = "Green Eyes was added to Library\n";
 		String returnString = library.addSongToLibrary("Green Eyes", "Coldplay");
 		assertEquals(str,returnString);
 	}
@@ -30,14 +30,14 @@ class testLibraryModel {
 	void testAddNONValidSongToLibrary(){
 		LibraryModel library = new LibraryModel();
 		String returnString = library.addSongToLibrary("Green", "Coldplay");
-		String str = "Song could not be added; not found in MusicStore";
+		String str = "Song could not be added; not found in MusicStore\n";
 		assertEquals(str,returnString);
 	}
 	
 	@Test
 	void testAddDuplicateSongToLibrary(){
 		LibraryModel library = new LibraryModel();
-		String str = "Song could not be added; already in Library";
+		String str = "Song could not be added; already in Library\n";
 		
 		// attempts to add song twice, storing returnString on second attempt
 		library.addSongToLibrary("Green Eyes", "Coldplay");
@@ -48,7 +48,7 @@ class testLibraryModel {
 	@Test
 	void testNonValidAlbumToLibrary(){
 		LibraryModel library = new LibraryModel();
-		String str = "Song could not be added; already in Library";
+		String str = "Song could not be added; already in Library\n";
 		
 		// attempts to add song twice, storing returnString on second attempt
 		library.addSongToLibrary("Green Eyes", "Coldplay");
@@ -552,7 +552,30 @@ class testLibraryModel {
 		assertEquals(library.playSong("sdfgh", "Adeel"), "Song is not in library\n");
 	}
 	
-
+	@Test 
+	void testShuffle() {
+		LibraryModel library = new LibraryModel();
+		library.addAlbumToLibrary("19", "Adele");
+		String returnStr = library.allSongs();
+		String str = "Here is a list of all songs in your library\n"
+				+ "Daydreamer by Adele from album: 19\n"
+				+ "Best for Last by Adele from album: 19\n"
+				+ "Chasing Pavements by Adele from album: 19\n"
+				+ "Cold Shoulder by Adele from album: 19\n"
+				+ "Crazy for You by Adele from album: 19\n"
+				+ "Melt My Heart to Stone by Adele from album: 19\n"
+				+ "First Love by Adele from album: 19\n"
+				+ "Right as Rain by Adele from album: 19\n"
+				+ "Make You Feel My Love by Adele from album: 19\n"
+				+ "My Same by Adele from album: 19\n"
+				+ "Tired by Adele from album: 19\n"
+				+ "Hometown Glory by Adele from album: 19\n";
+		assertEquals(returnStr, str);
+		
+		library.shuffleSongs();
+		returnStr = library.allSongs();
+		assertNotEquals(returnStr, str);
+	}
 	
 	
 }
