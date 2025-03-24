@@ -85,13 +85,18 @@ public class MusicApp {
             System.out.println("2. Play Song");
             System.out.println("3. View Recently Played Songs");
             System.out.println("4. View Frequently Played Songs");
-            System.out.println("5. Search Library");
-            System.out.println("6. Search MusicStore");
-            System.out.println("7. Shuffle Library");
-            System.out.println("8. View Playlists");
-            System.out.println("9. Remove Song");
-            System.out.println("10. Remove Album");
-            System.out.println("11. Logout");
+            System.out.println("5. View albums in Library");
+            System.out.println("6. Search Library");
+            System.out.println("7. Search MusicStore");
+            System.out.println("8. Add song to Library");
+            System.out.println("9. Add album to Library");
+            System.out.println("10. Rate a song");
+            System.out.println("11. Favorite a song");
+            System.out.println("12. Shuffle Library");
+            System.out.println("13. Playlist options (view, create and add/remove songs)"); 
+            System.out.println("14. Remove Song from Library");
+            System.out.println("15. Remove Album from Library");
+            System.out.println("16. Logout");
             System.out.print("Enter choice: ");
             String choice = scanner.nextLine();
             
@@ -109,24 +114,39 @@ public class MusicApp {
                     viewFrequentlyPlayed();
                     break;
                 case "5":
+                	viewAlbums();
+                	break;
+                case "6":
                     searchLibrary();
                     break;
-                case "6":
+                case "7":
                     searchMusicStore();
                     break;
-                case "7":
+                case "8":
+                	addSongToLibrary();
+                	break;
+                case "9":
+                	addAlbumToLibrary();
+                	break;
+                case "10":
+                	rateSong();
+                	break;
+                case "11":
+                	favoriteSong();
+                	break;
+                case "12":
                     shuffleLibrary();
                     break;
-                case "8":
-                	System.out.print(currentUser.displayPlaylists());
+                case "13":
+                	playListOptions();
                     break;
-                case "9":
+                case "14":
                     removeSong();
                     break;
-                case "10":
+                case "15":
                     removeAlbum();
                     return;
-                case "11":
+                case "16":
                     System.out.println("\nLogging out...\n");
                     return;
                 default:
@@ -135,55 +155,155 @@ public class MusicApp {
         }
     }
 
+    private void favoriteSong() {
+		System.out.print("Enter song to favorite: ");
+		String title = scanner.nextLine();
+		System.out.print("Enter artist: ");
+		String artist = scanner.nextLine();
+		System.out.print("\n" + currentUser.rateSong(title, artist, 5));
+	}
 
-    // TODO add the ability to add to library after searching
+	// view all, view specific, create, add/remove
+    private void playListOptions() {
+		System.out.println("Playlist Options: 1. view all 2. search for playlist "
+				+ "3. create playlist 4. add song 5. add album 6. remove song");
+		System.out.print("Enter choice: ");
+		String choice = scanner.nextLine();
+		switch (choice) {
+			case "1":
+				System.out.print("\n" + currentUser.displayPlaylists());
+				break;
+			case "2":
+				System.out.print("Enter playlist title: ");
+				String title = scanner.nextLine();
+				System.out.print("\n" + currentUser.getPlaylist(title));
+				break;
+			case "3":
+				System.out.print("Enter playlist title to create: ");
+				String playlistName = scanner.nextLine();
+				System.out.print("\n" + currentUser.createPlaylist(playlistName));
+				break;
+			case "4":
+				System.out.print("Which playlist would you like to add a song to: ");
+				playlistName = scanner.nextLine();
+				System.out.print("Enter song title: ");
+				title = scanner.nextLine();
+				System.out.print("Enter artist: ");
+				String artist = scanner.nextLine();
+				System.out.print("\n" + currentUser.addSongToPlaylist(playlistName, title, artist));
+				break;
+			case "5":
+				System.out.print("Which playlist would you like to add an album to: ");
+				playlistName = scanner.nextLine();
+				System.out.print("Enter album title: ");
+				title = scanner.nextLine();
+				System.out.print("Enter artist: ");
+				artist = scanner.nextLine();
+				System.out.print("\n" + currentUser.addAlbumToPlaylist(playlistName, title, artist));
+				break;
+			case "6":
+				System.out.print("Which playlist would you like to remove a song from: ");
+				playlistName = scanner.nextLine();
+				System.out.print("Enter song title: ");
+				title = scanner.nextLine();
+				System.out.print("Enter artist: ");
+				artist = scanner.nextLine();
+				System.out.print("\n" + currentUser.removeSongFromPlaylist(playlistName, title, artist));
+				break;
+		}
+			
+	}
+
+	private void addAlbumToLibrary() {
+		System.out.print("Enter album title to add: ");
+		String title = scanner.nextLine();
+		System.out.print("Enter artist: ");
+		String artist = scanner.nextLine();
+		System.out.print("\n" + currentUser.addAlbumToLibrary(title, artist));
+	}
+
+	private void rateSong() {
+		System.out.print("Enter song title to rate: ");
+		String title = scanner.nextLine();
+		System.out.print("Enter artist: ");
+		String artist = scanner.nextLine();
+		System.out.print("Enter rating (1 through 5): ");
+		String rating = scanner.nextLine();
+		// while rating is invalid, request new rating
+		while (!("12345".contains(rating))) {
+			System.out.println("Invalid rating. Try again: ");
+			rating = scanner.nextLine();
+		}
+		int intRating = Integer.parseInt(rating);
+		System.out.print("\n" + currentUser.rateSong(title, artist, intRating));
+			
+			
+		
+	}
+
+	private void addSongToLibrary() {
+		System.out.print("Enter song title to add: ");
+		String title = scanner.nextLine();
+		System.out.print("Enter artist: ");
+		String artist = scanner.nextLine();
+		System.out.print("\n" + currentUser.addSongToLibrary(title, artist));
+	}
+
+	private void viewAlbums() {
+		System.out.print("\n" + currentUser.viewAlbums());
+	}
+
+	// TODO add the ability to add to library after searching
     // prob just ask "do you want to add song to library" after searching
     // default to add first song (not sure how to go about adding other songs)
     private void searchMusicStore() {
-    	System.out.println("Search in musci store or library?");
     	System.out.println("Search for 1. song(s) or 2. album(s) in MusicStore?");
     	System.out.print("Enter choice: ");
     	String songOrAlbum = scanner.nextLine();
-    	System.out.println("Search by 1. Title 2. Artist 3. Genre");
+    	System.out.println("Search by 1. Title 2. Artist");
     	System.out.print("Enter choice: ");
-    	String searchType = scanner.nextLine();
-        switch(searchType) {
+    	String titleOrArtist = scanner.nextLine();
+        switch(songOrAlbum) {
 	        case "1":
-	        	System.out.print("Enter title to search: ");
-	            String title = scanner.nextLine();
-	            // searching for songs
-	            if(songOrAlbum.equals("1")) {
-	            	System.out.print(MusicStore.getSongsByTitle(title));
-	            	// TODO don't need to view album details from music store
-		            System.out.print("Would you like to view album details? (yes/no): ");
-		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
-		                MusicStore.displayAlbumInfo(title);
-		            }
-		            // TODO we don't have the ability to do this just from title
-		            System.out.print("Would you like to add song to library? (yes/no): ");
-		            if (scanner.nextLine().equalsIgnoreCase("yes")) {
-		                //currentUser.addSongToLibrary(title);
-		            }
+	            if(titleOrArtist.equals("1")) {
+	            	System.out.print("Enter title: ");
+	            	String title = scanner.nextLine();
+	            	System.out.print("\nSongs in MusicStore with title: " + title +
+	            					"\n" + MusicStore.getSongsByTitle(title));
 		        	break;
 	            }
 	            else if (songOrAlbum.equals("2")){
-	            	System.out.print(MusicStore.getAlbumsByTitle(title));
+	            	System.out.print("Enter artist: ");
+	            	String artist = scanner.nextLine();
+	            	System.out.print("\nSongs in MusicStore with artist: " + artist + 
+	            					"\n" + MusicStore.getSongsByArtist(artist));
+		        	break;
 	            }
 	            else {
 	            	System.out.println("Invalid choice. Try again.");
 		        	searchMusicStore();
+		        	break;
 	            }
-	        // TODO fix logic, doesnt differenciate between searching for album and song
 	        case "2":
-	        	System.out.print("Enter Artist to search: ");
-	            String artist = scanner.nextLine();
-	            System.out.print(MusicStore.getSongsByArtist(artist));
-	        	break;
-	        case "3":
-	        	System.out.print("Enter Genre to search: ");
-	            String genre = scanner.nextLine();
-	            System.out.print(MusicStore.getSongsByGenre(genre));
-	        	break;
+	        	if(titleOrArtist.equals("1")) {
+	            	System.out.print("Enter title: ");
+	            	String title = scanner.nextLine();
+	            	System.out.print("\nAlbums in MusicStore with title: " + title + 
+        					"\n" + MusicStore.getAlbumsByTitle(title));
+		        	break;
+	            }
+	            else if (songOrAlbum.equals("2")){
+	            	System.out.print("Enter artist: ");
+	            	String artist = scanner.nextLine();
+	            	System.out.print("\nAlbums in MusicStore with artist: " + artist + 
+        					"\n" + MusicStore.getAlbumsByArtist(artist));
+		        	break;
+	            }
+	            else {
+	            	System.out.println("Invalid choice. Try again.");
+		        	searchMusicStore();
+		        	break;
+	            }
 	        default:
 	        	System.out.println("Invalid choice. Try again.");
 	        	searchMusicStore();
@@ -191,7 +311,24 @@ public class MusicApp {
 	}
     
 	private void searchLibrary() {
-    	System.out.println("Search for song(s) in library by: "
+		System.out.print("Would you like to search for 1. Songs or 2. Albums: ");
+		String SongAlbum = scanner.nextLine();
+		if(SongAlbum.equals("1")) {
+			searchSongsLibrary();
+			return;
+		}
+		else if (SongAlbum.equals("2")) {
+			searchAlbumsLibrary();
+			return;
+		}
+		else {
+			System.out.println("\nInvalid Choice. Try again");
+			searchLibrary();
+		}
+    }
+
+	private void searchSongsLibrary() {
+		System.out.println("Search for song(s) in library by: "
     			+ "1. Title 2. Album 3. Artist 4. Genre");
     	System.out.print("Enter choice: ");
     	String searchType = scanner.nextLine();
@@ -200,29 +337,54 @@ public class MusicApp {
 	        case "1":
 	        	System.out.print("Enter title of Song to search: ");
 	            String song = scanner.nextLine();
-	            System.out.print(currentUser.searchSong(song));
+	            System.out.print("\n" + currentUser.searchSong(song) + "\n");
 	        	break;
 	        case "2":
 	        	System.out.print("Enter title of Album to search: ");
 	            String album = scanner.nextLine();
-	            currentUser.searchAlbum(album);
+	            System.out.print("\n" + currentUser.searchAlbum(album) + "\n");
 	        	break;
 	        case "3":
 	        	System.out.print("Enter Artist to search: ");
 	            String artist = scanner.nextLine();
-	            currentUser.searchArtist(artist);
+	            System.out.print("\n" + currentUser.searchSongsByArtist(artist) + "\n");
 	        	break;
 	        case "4":
 	        	System.out.print("Enter Genre to search: ");
 	            String genre = scanner.nextLine();
-	            currentUser.searchGenre(genre);
+	            System.out.print("\n" + currentUser.searchGenre(genre) + "\n");
 	        	break;
 	        default:
 	        	System.out.println("Invalid choice. Try again.");
 	        	searchLibrary();
 	        	break;
         }
-    }
+	}
+
+	private void searchAlbumsLibrary() {
+		System.out.println("Search for album(s) in library by: "
+    			+ "1. Title 2. Artist");
+    	System.out.print("Enter choice: ");
+    	String searchType = scanner.nextLine();
+    	System.out.println();
+        switch(searchType) {
+	        case "1":
+	        	System.out.print("Enter title of Album to search: ");
+	            String song = scanner.nextLine();
+	            System.out.print(currentUser.searchAlbum(song) + "\n");
+	        	break;
+	        case "3":
+	        	System.out.print("Enter Artist to search: ");
+	            String artist = scanner.nextLine();
+	            System.out.print("\n" + currentUser.searchAlbumsByArtist(artist) + "\n");
+	        	break;
+	        default:
+	        	System.out.println("Invalid choice. Try again.");
+	        	searchLibrary();
+	        	break;
+        }
+		
+	}
 
 	private void searchSong() {
 		// TODO Auto-generated method stub
@@ -235,15 +397,17 @@ public class MusicApp {
 	private void removeSong() {
     	System.out.print("Enter title of song to remove: ");
         String title = scanner.nextLine();
-        // TODO fix
-        currentUser.removeSongFromLibrary(title, "");
+        System.out.print("Enter artist: ");
+        String artist = scanner.nextLine();
+        System.out.println("\n" + currentUser.removeSongFromLibrary(title, artist));
 	}
 
 	private void removeAlbum() {
 		System.out.print("Enter title of album to remove: ");
         String title = scanner.nextLine();
-        // TODO fix
-        currentUser.removeAlbumFromLibrary(title, "");
+        System.out.print("Enter artist: ");
+        String artist = scanner.nextLine();
+        System.out.println("\n" + currentUser.removeAlbumFromLibrary(title, artist));
 	}
 
 	private void viewLibrary() {
@@ -251,10 +415,10 @@ public class MusicApp {
         String sortChoice = scanner.nextLine();
         int choice = Integer.parseInt(sortChoice);
         if (choice >= 1 && choice<=3) {
-        	System.out.println(currentUser.displayLibrary(choice));
+        	System.out.println("\n" + currentUser.displayLibrary(choice));
         }
         else { 
-        	System.out.println("Invalid choice. Try again");
+        	System.out.println("\nInvalid choice. Try again");
         	viewLibrary();
         }
     }
@@ -264,7 +428,7 @@ public class MusicApp {
         String title = scanner.nextLine();
         System.out.print("Enter artist name: ");
         String artist = scanner.nextLine();
-        System.out.print(currentUser.playSong(title, artist));
+        System.out.print("\n" + currentUser.playSong(title, artist));
     }
 
     private void viewRecentlyPlayed() {

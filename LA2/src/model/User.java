@@ -99,7 +99,11 @@ public class User {
 		return library.getAlbumsByTitle(title);
 	}
 
-	public String searchArtist(String artist) {
+	public String searchSongsByArtist(String artist) {
+		return library.getSongsByArtist(artist);
+	}
+	
+	public String searchAlbumsByArtist(String artist) {
 		return library.getAlbumsByArtist(artist);
 	}
 
@@ -116,10 +120,45 @@ public class User {
 		return library.getSongsByTitle(title);
 	}
 
+	public String getPlaylist(String title) {
+		return library.getPlaylistByName(title);
+	}
+
+	public String createPlaylist(String title) {
+		return library.createPlaylist(title);
+	}
+
+	public String removeSongFromPlaylist(String playlistName, String title, String artist) {
+		return library.removeSongFromPlaylist(playlistName, title, artist);
+	}
+
+	public String viewAlbums() {
+		return library.allAlbums();
+	}
+
+	public String addAlbumToLibrary(String title, String artist) {
+		return library.addAlbumToLibrary(title, artist);
+	}
+	
+
+	public String rateSong(String title, String artist, int rating) {
+		return library.rateSong(title, artist, rating);
+	}
+
+	public String addSongToPlaylist(String playlistName, String title, String artist) {
+		return library.addSongToPlaylist(playlistName, title, artist);
+	}
+	
+	public String addAlbumToPlaylist(String playlistName, String title, String artist) {
+		return library.addAlbumToPlaylist(playlistName, title, artist);
+	}
+	
 	// TODO fill
 	public String toString() {
 		return "";
 	}
+
+	
 
 
 	

@@ -18,22 +18,12 @@ public class LibraryModel {
 	private HashMap<String,Playlist> collection = new HashMap<String, Playlist>();
 	private ArrayList<Song> masterSongList;
 
-	public LibraryModel(){
+	public LibraryModel() {
 		masterSongList = new ArrayList<Song>();
 		collection.put("Favorites", new Playlist("Favorites"));
 		collection.put("Recently Played", new Playlist("Recently Played"));
 		collection.put("Frequently Played", new Playlist("Frequently Played"));
 		collection.put("Top Rated", new Playlist("Top Rated"));
-		// playlists only appear when they have more than 10 songs
-		collection.put("ROCK GENRE", new Playlist("ROCK GENRE"));
-		collection.put("COUNTRY GENRE", new Playlist("COUNTRY GENRE"));
-		collection.put("TRADITIONAL COUNTRY GENRE", new Playlist("TRADITIONAL COUNTRY GENRE"));
-		collection.put("CLASSICAL GENRE", new Playlist("CLASSICAL GENRE"));
-		collection.put("ROCK GENRE", new Playlist("ROCK GENRE"));
-		collection.put("POP GENRE", new Playlist("POP GENRE"));
-		collection.put("ALTERNATIVE GENRE", new Playlist("ALTERNATIVE GENRE"));
-		collection.put("LATIN GENRE", new Playlist("LATIN GENRE"));
-		collection.put("SINGER/SONGWRITE GENRE", new Playlist("SINGER/SONGWRITER GENRE"));
 	}
 	
 	// finds song from songName and artistName in music store and creates copy
@@ -56,24 +46,27 @@ public class LibraryModel {
 		}
 		return false;
 	}
-	// adds song to HashMap, if no other songs share title, 
-	// will add <title, ArrayList<Song>> to HashMap
+	// adds song to library, if exists in music store and not already in library, 
 	public void addSong(Song s) {
-		// if HashMap does not contain song title
+		// if masterSongList already contains song, do not add it
+		if (masterSongList.contains(s)) {
+			return;
+		}
+		// if songs does not contain song title
 		if (!songs.containsKey(s.getTitle())) {
 			songs.put(s.getTitle(), new ArrayList<Song>());
 		}
-		// if HashMap doesn't contain songs by this artist
+		// if artists doesn't contain songs by this artist
 		if (!artists.containsKey(s.getArtist())) {
 			artists.put(s.getArtist(), new ArrayList<Song>());
 		}
-		
-		if (collection.containsKey(s.getGenre())) {
-			collection.get(s.getGenre() + "GENRE").addSong(s);
+		// if collection doesn't contain genre
+		if (!collection.containsKey(s.getGenre() + " GENRE")) {
+			collection.put(s.getGenre() + " GENRE", new Playlist(s.getGenre()));
 		}
-
 		songs.get(s.getTitle()).add(s);
 		artists.get(s.getArtist()).add(s);
+		collection.get(s.getGenre() + " GENRE").addSong(s);
 		masterSongList.add(s);
 	}
 	
@@ -86,24 +79,37 @@ public class LibraryModel {
 		}
 		Album a = MusicStore.getAlbumByTitleAndArtist(albumName, artist);
 		albums.add(a);
-		// TODO test add song to genre playlists
-		collection.put(a.getGenre(), new Playlist(a.getGenre()));
+		
+		// if genre isn't in collection, add it
+		if (!collection.containsKey(a.getGenre() + " GENRE")) {
+			collection.put(a.getGenre() + " GENRE", new Playlist(a.getGenre()));
+		}
 		for(Song s: a.getSongs()) {
 			addSong(s);
-			collection.get(a.getGenre()).addSong(s);
+			collection.get(a.getGenre() + " GENRE").addSong(s);
 			
 		}
 		return albumName + " successfully added\n";
 	}
 	
 	public String addSongToLibrary(String songName, String artist) {
-		Song s = createSong(songName, artist);
+		Song s = MusicStore.getSongByTitleArtist(songName, artist);
 		if (s == null) {
 			return "Song could not be added; not found in MusicStore";
 		}
 		if (duplicate(s)) {
 			return "Song could not be added; already in Library";
 		}
+		/* TODO this is what I was workign on for adding album when adding song
+		for (Album a: albums) {
+			// if album is already in library, simply add song
+			if (s.getAlbum().equals(a.getTitle())){
+				addSong(s);
+				return songName + " was added to Library";
+			}
+		}
+		// if album was not found, add album to library with only this song
+		*/
 		addSong(s);
 		return songName + " was added to Library";
 	}
@@ -186,13 +192,15 @@ public class LibraryModel {
 		// if the playlist exists
 		if (collection.containsKey(playlistName)) {
 			// search for song
-			for (Song s: songs.get(songTitle)) {
-				// if song is found
-				if (s.getArtist().equals(artist)) {
-					return collection.get(playlistName).addSong(s);
+			if(songs.containsKey(songTitle)) {
+				for (Song s: songs.get(songTitle)) {
+					// if song is found
+					if (s.getArtist().equals(artist)) {
+						return collection.get(playlistName).addSong(s);
+					}
 				}
 			}
-			return "Song is not in library";
+			return "Song is not in library\n";
 		}
 		// if the playlist does not exist
 		return playlistName + " has not been created\n"; 
@@ -201,21 +209,17 @@ public class LibraryModel {
 	public String addAlbumToPlaylist(String playlistName, String albumTitle, String artist) {
 		// if the playlist exists
 		if (collection.containsKey(playlistName)) {
-			Album album = MusicStore.getAlbumByTitleAndArtist(albumTitle, artist);
-			if (album == null) {return "Album was not found in music store";}
 			//check if album is in album list
-			boolean foundAlbum = false;
 			for (Album a: albums) {
 				if (a.getArtist().equals(artist) && a.getTitle().equals(albumTitle)) {
-					foundAlbum = true;
+					for (Song s: a.getSongs()) {
+						collection.get(playlistName).addSong(s);
+					}
+					return albumTitle + " has been added to playlist" + playlistName + "\n";
 				}
 			}
-			if (foundAlbum == false) {return "Album not in library";}
-			// TODO escaping references
-			for (Song s: album.getSongs()) {
-				collection.get(playlistName).addSong(s);
-			}
-			return albumTitle + " has been added to playlist" + playlistName + "\n";
+			return "Album not in library\n";
+			
 		}
 		// if the playlist does not exist
 		return playlistName + " has not been created\n"; 
@@ -297,6 +301,10 @@ public class LibraryModel {
 	}
 	
 	public String rateSong(String title, String artist, int rating) {
+		if (!songs.containsKey(title)) {
+			// if the song was not found
+			return "Song was not found\n";
+		}
 		// find the song
 		for (Song s: songs.get(title)) {
 			if (s.getArtist().equals(artist)) {
@@ -314,8 +322,9 @@ public class LibraryModel {
 		}
 		
 		// if the song was not found dont rate it
-		return "Song was not found";
+		return "Song was not found\n";
 	}
+	
 	public void shuffleSongs() {
 		Collections.shuffle(masterSongList);
 	}
@@ -397,19 +406,17 @@ public class LibraryModel {
 		if(!songs.containsKey(title)) {
 			return "Song is not in library\n";
 		}
-
-		Song song = new Song("temp","temp","temp");
 		for (Song s : songs.get(title)){
 			if (s.getArtist().equals(artist)) {
-				song = s;
-				break;
+				// inserts song to Recently Played playlist
+				collection.get("Recently Played").insertSong(s);
+				freqPlayed(s);
+				
+				return s.playSong();
 			}
 		}
-		// inserts song to Recently Played playlist
-		collection.get("Recently Played").insertSong(song);
-		freqPlayed(song);
+		return "Song is not in library\n";
 		
-		return song.playSong();
 	}
 	
 	// adds song to freqPlayed if applicable 
@@ -516,6 +523,13 @@ public class LibraryModel {
 			return "Album Removed\n";
 		} 
 		return "Album not found\n"; 
+	}
+	
+	public String searchByGenre(String genre) {
+		if (collection.containsKey(genre + " GENRE")){
+			return collection.get(genre+" GENRE").getSongs();
+		}
+		return "Genre not found\n";
 	}
 
 }

@@ -55,7 +55,7 @@ public final class MusicStore {
 			while(scanner.hasNext()) {
 				// adds new song from line
 				Song s = new Song(scanner.nextLine(), artistName, albumTitle);
-				s.setGenre(genre.toUpperCase());
+				s.setGenre(genre);
 				songs.add(s);
 				songList.add(s);
 			}
@@ -166,10 +166,5 @@ public final class MusicStore {
 			return "No songs found\n";
 		}
 		return str;
-	}
-
-	public static void displayAlbumInfo(String title) {
-		// TODO Auto-generated method stub
-		
 	}
 }

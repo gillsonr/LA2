@@ -291,8 +291,8 @@ class testLibraryModel {
 					+ "Frequently Played\n"
 					+ "Top Rated\n"
 					+ "Recently Played\n"
-					+ "ALT\n" 
 					+ "2025\n" 
+					+ "ALT\n" 
 					+ "Favorites\n";
 		assertEquals(str, returnStr);
 	}
@@ -306,22 +306,56 @@ class testLibraryModel {
 				+ "Recently Played\n"
 				+ "Favorites\n", library.allPlaylists());
 		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
+		// TODO why is Alternative not in all caps like it is in the instance variables of library
 		assertEquals("Here is a list of all playlists in your library\n"
 				+ "Frequently Played\n"
-				+ "Alternative\n"
 				+ "Top Rated\n"
 				+ "Recently Played\n"
+				+ "Alternative\n"
 				+ "Favorites\n", library.allPlaylists());
-		library.addAlbumToLibrary("19", "Adele");
+		// TODO fix not working when adding individual songs
+		library.addSongToLibrary("Tired", "Adele");
+		library.addSongToLibrary("Daydreamer", "Adele");
+		library.addSongToLibrary("Best for Last", "Adele");
+		library.addSongToLibrary("Chasing Pavements", "Adele");
+		library.addSongToLibrary("Cold Shoulder", "Adele");
+		library.addSongToLibrary("Melt My Heart to Stone", "Adele");
+		library.addSongToLibrary("First Love", "Adele");
+		library.addSongToLibrary("Right as Rain", "Adele");
+		library.addSongToLibrary("Make You Feel My Love", "Adele");
+		library.addSongToLibrary("My Same", "Adele");
+		library.addSongToLibrary("Hometown Glory", "Adele");
 		assertEquals("Here is a list of all playlists in your library\n"
 				+ "Frequently Played\n"
-				+ "Alternative\n"
 				+ "Top Rated\n"
 				+ "Recently Played\n"
 				+ "Pop\n"
+				+ "Alternative\n"
 				+ "Favorites\n", library.allPlaylists());
 		
 	}
+	
+	@Test
+	void testSearchForGenre() {
+		LibraryModel library = new LibraryModel();
+		assertEquals(library.searchByGenre("Alternative"), "Genre not found\n");
+		library.addAlbumToLibrary("A Rush of Blood to the Head", "Coldplay");
+		String str = "Here is a list of songs in Alternative\n"
+				+ "Politik by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "In My Place by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "God Put a Smile Upon Your Face by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "The Scientist by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "Clocks by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "Daylight by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "Green Eyes by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "Warning Sign by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "A Whisper by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "A Rush of Blood to the Head by Coldplay from album: A Rush of Blood to the Head\n"
+				+ "Amsterdam by Coldplay from album: A Rush of Blood to the Head\n";
+		assertEquals(library.searchByGenre("Alternative"), str);
+	}
+	
+	
 	
 	@Test
 	void testFavoriteSongs(){
@@ -338,6 +372,7 @@ class testLibraryModel {
 		returnStr = library.favoriteSongs();
 		str = "Here is a list of songs in Favorites\n"+ 
 				"Green Eyes by Coldplay from album: A Rush of Blood to the Head\n";
+		// TODO add test, nothing here?
 	}
 	
 	@Test
@@ -514,7 +549,7 @@ class testLibraryModel {
 		LibraryModel library = new LibraryModel();
 		library.addAlbumToLibrary("19", "Adele");
 		assertEquals(library.playSong("Daydreamer", "Adele"), "Now playing Daydreamer by Adele\n");
-		assertEquals(library.playSong("Daydeemer", "Adeel"), "Song is not in library\n");
+		assertEquals(library.playSong("sdfgh", "Adeel"), "Song is not in library\n");
 	}
 	
 
